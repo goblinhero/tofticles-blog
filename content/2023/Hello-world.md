@@ -1,7 +1,7 @@
 +++
 title = 'Hello World'
 date = 2023-11-15T13:32:05+01:00
-draft = true
+draft = false
 author = 'Magnus'
 +++
 
