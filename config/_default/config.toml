@@ -7,6 +7,11 @@ Here, have mine
 #profilePicture = "images/profile.jpg"
 
 [[params.socialIcons]]
+icon = "fa-brands fa-mastodon"
+title = "mastodon"
+url = "https://helvede.net/@tofticles"
+
+[[params.socialIcons]]
 icon = "fab fa-linkedin"
 title = "Linkedin"
 url = "https://www.linkedin.com/in/magnus-toftdal/"
