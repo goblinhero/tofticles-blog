@@ -1,5 +1,5 @@
-baseURL = 'https://example.org/'
+baseURL = 'https://purple-ocean-0bb2d8e03.4.azurestaticapps.net/'
 languageCode = 'en-us'
-title = 'My New Hugo Site'
+title = 'The adventures of Tofticles'
 theme = 'anatole'
 contentDir = 'content'
