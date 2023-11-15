@@ -1,0 +1,17 @@
+[params]
+title = "Adventures of Tofticles"
+author = "Magnus Toftdal"
+description = """There are no silver bullets 
+Here, have mine
+"""
+#profilePicture = "images/profile.jpg"
+
+[[params.socialIcons]]
+icon = "fab fa-linkedin"
+title = "Linkedin"
+url = "https://www.linkedin.com/in/magnus-toftdal/"
+
+[[params.socialIcons]]
+icon = "fas fa-envelope"
+title = "e-mail"
+url = "mailto:toftdal@hey.com"
