@@ -4,7 +4,7 @@ author = "Magnus Toftdal"
 description = """There are no silver bullets 
 Here, have mine
 """
-#profilePicture = "images/profile.jpg"
+profilePicture = "images/tofticles.jpg"
 
 [[params.socialIcons]]
 icon = "fa-brands fa-mastodon"
