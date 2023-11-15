@@ -2,6 +2,7 @@
 title = 'Hugo'
 date = 2023-11-15T14:19:20+01:00
 draft = false
+summary = 'Choosing a static blog generator'
 +++
 
 Choosing between static blog generators is a fairly straight-forward process. You basically choose a flavour (read: Find something that has decent traction and is well-supported). I decided to go with [Hugo](https://github.com/gohugoio/hugo) since it supports markdown syntax, has responsive design and seems fairly extensible. 

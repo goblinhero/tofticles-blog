@@ -3,6 +3,7 @@ title = 'Hello World'
 date = 2023-11-15T13:32:05+01:00
 draft = false
 author = 'Magnus'
+summary = 'I am back!'
 +++
 
 So, finally got back into blogging. And since I like control - this time around, I went with using a framework to create my blog with static pages. I know, I know - I could have just used a blogging platform somewhere.. and watched it be enshittified in a matter of months. I choose not to. 
