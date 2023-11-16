@@ -2,6 +2,7 @@
 title = 'Anex - First Blood'
 date = 2023-11-16T09:50:47+01:00
 draft = false
+summary = Getting up and running with .NET Web API
 +++
 
 In the past, I have worked on several larger solutions in DotNet - and to get to know Azure, I need something fairly substantial to have it make sense and feel the pain points of the platform.
