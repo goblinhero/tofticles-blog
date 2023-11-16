@@ -3,3 +3,12 @@ languageCode = 'en-us'
 title = 'The adventures of Tofticles'
 theme = 'anatole'
 contentDir = 'content'
+
+[outputs]
+  home = ['html', 'rss']
+  section = ['html', 'rss']
+  taxonomy = ['html']
+  term = ['html']
+
+[params]
+rssFullContent = true

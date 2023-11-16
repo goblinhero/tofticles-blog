@@ -1,10 +1,13 @@
 [params]
 title = "Adventures of Tofticles"
 author = "Magnus Toftdal"
-description = """There are no silver bullets 
+description = """There are no silver bullets! 
 Here, have mine
 """
 profilePicture = "images/tofticles.jpg"
+contentratio = 0.8
+hidesidebar = true
+reversepagetitle = true
 
 [[params.socialIcons]]
 icon = "fa-brands fa-mastodon"
@@ -28,5 +31,11 @@ url = "mailto:toftdal@hey.com"
   identifier = "home"
   weight = 100
   url = "/"
+
+  [[menu.main]]
+  name = "RSS"
+  identifier = "rss"
+  weight = 120
+  url = "/index.xml"
 
 
