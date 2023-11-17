@@ -38,4 +38,9 @@ url = "mailto:toftdal@hey.com"
   weight = 120
   url = "/index.xml"
 
+  [[menu.main]]
+  name = "About"
+  identifier = "about"
+  weight = 140
+  url = "/about"
 
