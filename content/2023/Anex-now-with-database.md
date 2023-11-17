@@ -23,7 +23,7 @@ A good question would be, why I call it a ISessionHelper and not a repository - 
 
  ### The Onion architecture
 
- By far one of my favorite ways to build software. The first article I read about it was by Jeffrey Palermo (it can be found [here](https://jeffreypalermo.com/2008/07/the-onion-architecture-part-1/)). If you take it to the max (and of course we do) - the domain model should have no dependencies beside the BCL (Base Class Library).
+ By far one of my favorite ways to build software. The first article I read about it was by Jeffrey Palermo (it can be found [here](https://jeffreypalermo.com/2008/07/the-onion-architecture-part-1/)). If you take it to the max (and of course we do) - the domain model should have no dependencies beside the BCL (Base Class Library). I find it easier to adhere to this, using NHibernate over EF.
 
  Alright, back on track - you'll notice that I have LedgerTag and LedgerTagDto. The reasoning is simple - I want to protect the entities as much as possible, and this means that they should -never- be sent over the wire. You know what they do to data on the internet, right? Also, if you look in the mapping files, you'll notice that the Dto's are marked as immutable, so I do not risk accidently writing data to the database from a loose Dto that someone mangled. Only entities are allowed to be persisted.
 
