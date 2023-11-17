@@ -9,7 +9,7 @@ The merge request can be found [here](https://github.com/goblinhero/Anex/pull/1)
 
 Okay - so quite a bit going on here. I've added a database with MSSQL Express just to test that my code actually works. A little caveat if you try to run the code yourself, if you run with the Docker file, remember that it is on an isolated network, so it will not be able to connect directly to your local SQL server. I'm not saying that I wasted three hours yesterday trying in vain to get it connected - I'm simply saying, find a guide if you want to attempt it.
 
-Back to the code. I like Command-Query-Responsibility-Separation, so my ISessionHelper follows that pattern - for now it only supports querying, again to just do a vertical slize and convert my static dictionary with something backed by a database.
+Back to the code. I like Command-Query-Responsibility-Separation, so my ISessionHelper follows that pattern - for now it only supports querying, again to just do a vertical slize and replace my static dictionary with something backed by a database.
 
 A good question would be, why I call it a ISessionHelper and not a repository - I'm glad you thought of that. I consider the ISession a generic repository since you are working with Dto's and Entities directly in the query syntax. And this brings me to: Why NHibernate when Entity Framework is there. Another good question. It comes down to a few factors outlined below:
 
