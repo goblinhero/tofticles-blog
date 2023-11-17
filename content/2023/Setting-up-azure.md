@@ -9,7 +9,7 @@ So, this took more fiddling, than I would have liked, but hey-ho. I started by c
 
 ### Dockerized, setting it up with a .yml Github Action file, tries 1-8
 
-This requires a personal access token to the Github repo to be stored in Azure along with a few extra parameters. My structure did not work out of the box (I had to prefix the path to my docker file - Visual Studio places it in the project path, not the solution path), and once I got the action to find the docker file, I got an error that it could not find my csproj file (which does not make sense since the dokcerfile works locally). After some fiddling, I decided not to pursue it further as the error message was very unhelpful and searching online for it pulled a lot of duds.
+This requires a personal access token to the Github repo to be stored in Azure along with a few extra parameters. My structure did not work out of the box (I had to prefix the path to my docker file - Visual Studio places it in the project path, not the solution path), and once I got the action to find the docker file, I got an error that it could not find my csproj file (which does not make sense since the dockerfile works locally). After some fiddling, I decided not to pursue it further as the error message was very unhelpful and searching online for it pulled a lot of duds.
 
 ### Creating the Github action from Azure, still dockerized
 
