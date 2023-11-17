@@ -1,5 +1,5 @@
 +++
-title = 'Anex Now With Database'
+title = 'Anex - Now With Database'
 date = 2023-11-17T07:44:34+01:00
 draft = false
 summary = 'NHibernate for the win!'
