@@ -15,7 +15,7 @@ Time to spill the beans - what is going on here: I'm a former accountant which m
 
 Accountants work a lot with audit trails and traceability. Basically, whichever number you come up with in a report concerning your fiscal statements has to be backed by fact and there should be a straight line between the fact and what is presented. This is why I've implemented the `DisallowDeleteTransactionListener` and `InvalidTransactionalUpdateException`, so that even if I mess up in the code, I do not accidently alter or delete already posted transactional data. 
 
-The classes, I've implemented in this part are the basic building blocks - basically, we have drafts that will turn into final posts and transactions. As an aside, the name 'Anex' is Xena spelled backwards, which was the ERP-system I built on for around 9 years from 2010 - many ideas here are inspired by that work (and the hard-earned lessons back then).
+The classes, I've implemented in this part are the basic building blocks - basically, we have drafts that will turn into final posts and transactions. As an aside, the name 'Anex' is [Xena](https://xena.biz) spelled backwards, which was the ERP-system I built on for around 9 years from 2010 - many ideas here are inspired by that work (and the hard-earned lessons back then).
 
 ### Tests
 
