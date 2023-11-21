@@ -52,7 +52,7 @@ The Azure screenshots, however... It looks nothing like it - menu items have bee
     Properties
     Locks                       Locks
 
-Three(!) out of eight menu items are the same. Everything else (including the things I need) are completely different. Nothing is called 'Firewall' (which is what I looking for to allow connections from my workstation). If I use the search box - no results for 'Firewall'. I've clicked every single item under 'Settings' - no where is 'firewall' found.
+Three(!) out of eight menu items are the same. Everything else (including the things I need) are completely different. Nothing is called 'Firewall' (which is what I am looking for to allow connections from my workstation). If I use the search box - no results for 'Firewall'. I've clicked every single item under 'Settings' - no where is 'firewall' found.
 
 Dear Microsoft - do you know what that signals to me? That you have no idea where you're going. There's no strategy, just project groups milling around, adding things willy-nilly because 'we can always change it later'. This does not inspire confidence - it inspires uncertainty as in: 'I wonder how long the thing I'm making will keep working'. And the problem does not stop with nice people working for free for you - Microsoft's own guides, tutorials and other resources are similarly out-of-date.
 
