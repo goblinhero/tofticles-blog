@@ -2,7 +2,7 @@
 title = 'To REST or Not to REST'
 date = 2023-11-23T10:07:39+01:00
 draft = false
-summary = 'And people don't understand how wars start...'
+summary = 'And people do not understand how wars start...'
 +++
 
 First rule of Representational State Transfer - noone agrees what it -is- - everyone has their own definition and opinions. One of the problem areas concern how to use uri's:
