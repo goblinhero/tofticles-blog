@@ -2,7 +2,7 @@
 title = 'DateOnly in Ef Core'
 date = 2023-11-24T07:57:18+01:00
 draft = false
-summary = Turns out, it is supported in EF Core 8.
+summary = 'Turns out, it is supported in EF Core 8.'
 +++
 
 [Here](https://tofticles.dk/2023/fiscal-period-and-dates/), I wrote about support for DateOnly in NHibernate and the lacking support in EF Core - I've since looked into the matter. 
