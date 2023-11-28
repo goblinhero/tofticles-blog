@@ -8,6 +8,7 @@ profilePicture = "images/tofticles.jpg"
 contentratio = 0.8
 hidesidebar = true
 reversepagetitle = true
+customCss = ["css/custom.css"]
 
 [[params.socialIcons]]
 icon = "fa-brands fa-mastodon"
