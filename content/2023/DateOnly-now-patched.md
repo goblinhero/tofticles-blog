@@ -5,7 +5,7 @@ draft = false
 summary = 'New types, new headaches'
 +++
 
-The code for this post can be found [here](https://github.com/goblinhero/Anex/pull/31). It's basically a bugfix for the feature, explainered [here](https://tofticles.dk/2023/fiscal-period-and-dates/).
+The code for this post can be found [here](https://github.com/goblinhero/Anex/pull/31). It's basically a bugfix for the feature, explainered [here](/2023/fiscal-period-and-dates/).
 
 One thing, I forgot when adding support for DateOnly in the API, is that new types need specific handling in HTTP:PATCH endpoints, since it relies on a Dictionary of JSON values. Luckily, the code is prepared for this exact scenario, so it was a simple matter of adding these two lines:
 

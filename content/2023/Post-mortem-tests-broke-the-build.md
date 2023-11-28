@@ -7,7 +7,7 @@ summary = 'The intentions were good... Execution, not so much'
 
 The code for this post can be found [here](https://github.com/goblinhero/Anex/pull/22).
 
-I added tests to the project (you can find the introduction [here](https://tofticles.dk/2023/adding-tests-to-pipeline/)) and managed to completely miss that I broke the build. I first noticed when I was trying to test the real database in production and suddenly my api was no where to be found.
+I added tests to the project (you can find the introduction [here](/2023/adding-tests-to-pipeline/)) and managed to completely miss that I broke the build. I first noticed when I was trying to test the real database in production and suddenly my api was no where to be found.
 
 ### First rule of panic club - blame the host
 
