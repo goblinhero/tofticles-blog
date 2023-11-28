@@ -32,4 +32,4 @@ Funnily, this makes it a lot easier to support things like partial delivery (you
 
 ### Don't you have -any- collection?
 
-Well, as always, there are caveats - for things like `EconomicTransaction` in Anex, it actually has a collection of `LedgerPost`, because it's validity is dependant on the state of the LedgerPosts. Roughly speaking, Things that are immutable (business-wise) - write once, read often tend to be with collections - and otherwise, the child knows about the parent. But the most important is not having bidirectional relationships if at all possible - it is a huge complexity cost and you gain very little for it.
+Well, as always, there are caveats - for things like `EconomicTransaction` in Anex, it actually has a collection of `LedgerPost`, because it's validity is dependant on the state of the LedgerPosts. Roughly speaking, things that are immutable (business-wise) - write once, read often tend to be with collections - and otherwise, the child knows about the parent. But the most important is not having bidirectional relationships if at all possible - it is a huge complexity cost and you gain very little for it.
