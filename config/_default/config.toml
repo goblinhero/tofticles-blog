@@ -46,3 +46,14 @@ url = "mailto:toftdal@hey.com"
   weight = 140
   url = "/about"
 
+  [[menu.main]]
+  name = "2024"
+  identifier = "2024"
+  weight = 150
+  url = "/2024"
+
+  [[menu.main]]
+  name = "2023"
+  identifier = "2023"
+  weight = 160
+  url = "/2023"
