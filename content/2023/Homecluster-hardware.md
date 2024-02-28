@@ -13,7 +13,7 @@ So, I'm old-school and a scavenger - deal with it. Buying three new small machin
 * 16 GB RAM (DDR4 2400 MHz - upgradable to 32 GB if need be)
 * 256 GB SSD
 
-I realize that I could have gotten 3 new AMD Ryzen 3/Intel N100 mini-PCs with better specs at roughly the same price. But here's the thing - build-quality is not even remotely in the same league. Enterprise models are built to be serviceable, durable and all-around no-hassle. Just for comparison look at how heavy these machines are (1.32 kg each vs. around 810 g for the new machines) - the chassis is metal. Clearly meant for large enterprises that don't want to shift hardware too often for their office workers or waste time servicing them physically. And just look at the beauty:
+I realize that I could have gotten 3 new AMD Ryzen 3/Intel N100 mini-PCs with (overall) better specs and lower power consumption at roughly the same price. But here's the thing - build-quality is not even remotely in the same league. Enterprise models are built to be serviceable, durable and all-around no-hassle. Just for comparison look at how heavy these machines are (1.32 kg each vs. around 810 g for the new machines) - the chassis is metal. Clearly meant for large enterprises that don't want to shift hardware too often for their office workers or waste time servicing them physically. And just look at the beauty:
 
 ![The home cluster](/images/2024/cluster.jpg)
 
