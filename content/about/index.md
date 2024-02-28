@@ -4,7 +4,7 @@ date = 2023-11-17T09:15:19+01:00
 draft = false
 +++
 
-This blog is primarily made to support my journey on becoming proficient with Azure. There'll be discussions about code as well, mostly me justifying my choices as I go along.
+This blog was primarily made to support my journey on becoming proficient with Azure. Things have changed, moving the focus more to an all-open-source self-hosted kind of deal. There'll be discussions about code as well, mostly me justifying my choices as I go along. 
 
 You'll notice there is no comment section. This is a feature, not a bug. If you take issue with what I write - or just want to expand on something, please email me or contact me on Mastodon, the links are in the sidebar. The idea is that if your input is relevant, thought-provoking or otherwise interesting, I'll make a follow-up post explaining my thoughts on it. 
 
