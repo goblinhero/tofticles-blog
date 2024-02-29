@@ -1,5 +1,5 @@
 +++
-title = 'Detour - Getting Rdp to Work on Ubuntu'
+title = 'Detour - Getting RDP to Work on Ubuntu'
 date = 2024-02-29T16:02:40+01:00
 draft = false
 summary = 'Always the last thing you try, that works...'
