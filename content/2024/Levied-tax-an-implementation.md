@@ -1,5 +1,5 @@
 +++
-title = 'Levied Tax an Implementation'
+title = 'Levied Tax - an implementation'
 date = 2024-03-18T14:10:20+01:00
 draft = false
 summary = 'A more involved piece of functionality'
