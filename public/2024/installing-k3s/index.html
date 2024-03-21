@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html
+  dir="ltr"
+  lang="en"
+  data-theme=""
+  
+    class="html theme--light"
+  
+><head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+  <title>
+    
+      
+        Installing K3s |
+      Magnus Toftdal
+
+  </title>
+
+  
+  <meta charset="utf-8" /><meta name="generator" content="Hugo 0.124.0"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+  <meta name="author" content="Magnus Toftdal" />
+  <meta
+    name="description"
+    content="There are no silver bullets! 
+Here, have mine
+"
+  />
+  
+  
+    
+    
+    <link
+      rel="stylesheet"
+      href="/scss/main.min.772eefee9824c26da5d3828c2507ea318c8e7a37b0b1d18cd4f224edc2755fea.css"
+      integrity="sha256-dy7v7pgkwm2l04KMJQfqMYyOejewsdGM1PIk7cJ1X&#43;o="
+      crossorigin="anonymous"
+      type="text/css"
+    />
+  
+
+  
+  <link
+    rel="stylesheet"
+    href="/css/markupHighlight.min.73ccfdf28df555e11009c13c20ced067af3cb021504cba43644c705930428b00.css"
+    integrity="sha256-c8z98o31VeEQCcE8IM7QZ688sCFQTLpDZExwWTBCiwA="
+    crossorigin="anonymous"
+    type="text/css"
+  />
+  
+    
+    
+    <link
+      rel="stylesheet"
+      href="/css/custom.min.910eb93950d8bbbc989d4d1c78356baa8a2f649e4956e003b91741fe931354b9.css"
+      integrity="sha256-kQ65OVDYu7yYnU0ceDVrqoovZJ5JVuADuRdB/pMTVLk="
+      crossorigin="anonymous"
+      media="screen"
+    />
+  
+  
+  <link
+    rel="stylesheet"
+    href="/fontawesome/css/fontawesome.min.7d272de35b410fb165377550cdf9c4d3a80fbbcc961e111914e4d5c0eaf5729f.css"
+    integrity="sha256-fSct41tBD7FlN3VQzfnE06gPu8yWHhEZFOTVwOr1cp8="
+    crossorigin="anonymous"
+    type="text/css"
+  />
+  
+  <link
+    rel="stylesheet"
+    href="/fontawesome/css/solid.min.55d8333481b07a08e07cf6f37319753a2b47e99f4c395394c5747b48b495aa9b.css"
+    integrity="sha256-VdgzNIGwegjgfPbzcxl1OitH6Z9MOVOUxXR7SLSVqps="
+    crossorigin="anonymous"
+    type="text/css"
+  />
+  
+  <link
+    rel="stylesheet"
+    href="/fontawesome/css/regular.min.a7448d02590b43449364b6b5922ed9af5410abb4de4238412a830316dedb850b.css"
+    integrity="sha256-p0SNAlkLQ0STZLa1ki7Zr1QQq7TeQjhBKoMDFt7bhQs="
+    crossorigin="anonymous"
+    type="text/css"
+  />
+  
+  <link
+    rel="stylesheet"
+    href="/fontawesome/css/brands.min.9ed75a5d670c953fe4df935937674b4646f92674367e9e66eb995bb04e821647.css"
+    integrity="sha256-ntdaXWcMlT/k35NZN2dLRkb5JnQ2fp5m65lbsE6CFkc="
+    crossorigin="anonymous"
+    type="text/css"
+  />
+  
+  <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+
+  <link rel="canonical" href="http://localhost:1313/2024/installing-k3s/" />
+
+  
+  
+  
+  
+  <script
+    type="text/javascript"
+    src="/js/anatole-header.min.f9132794301a01ff16550ed66763482bd848f62243d278f5e550229a158bfd32.js"
+    integrity="sha256-&#43;RMnlDAaAf8WVQ7WZ2NIK9hI9iJD0nj15VAimhWL/TI="
+    crossorigin="anonymous"
+  ></script>
+
+  
+    
+    
+    <script
+      type="text/javascript"
+      src="/js/anatole-theme-switcher.min.d6d329d93844b162e8bed1e915619625ca91687952177552b9b3e211014a2957.js"
+      integrity="sha256-1tMp2ThEsWLovtHpFWGWJcqRaHlSF3VSubPiEQFKKVc="
+      crossorigin="anonymous"
+    ></script>
+  
+
+  
+
+
+  
+  <meta name="twitter:card" content="summary"/><meta name="twitter:title" content="Installing K3s"/>
+<meta name="twitter:description" content="It is this simple?!"/>
+
+
+
+  
+  <meta property="og:title" content="Installing K3s" />
+<meta property="og:description" content="It is this simple?!" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="http://localhost:1313/2024/installing-k3s/" /><meta property="article:section" content="2024" />
+<meta property="article:published_time" content="2024-03-12T09:49:23+01:00" />
+<meta property="article:modified_time" content="2024-03-12T09:49:23+01:00" /><meta property="og:site_name" content="Adventures of Tofticles" />
+
+
+
+  
+  
+  
+  
+  <script type="application/ld+json">
+    {
+        "@context": "http://schema.org",
+        "@type": "BlogPosting",
+        "articleSection": "2024",
+        "name": "Installing K3s",
+        "headline": "Installing K3s",
+        "alternativeHeadline": "",
+        "description": "
+      
+        It is this simple?!
+
+
+      
+
+
+    ",
+        "inLanguage": "en-us",
+        "isFamilyFriendly": "true",
+        "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "http:\/\/localhost:1313\/2024\/installing-k3s\/"
+        },
+        "author" : {
+            "@type": "Person",
+            "name": "Magnus Toftdal"
+        },
+        "creator" : {
+            "@type": "Person",
+            "name": "Magnus Toftdal"
+        },
+        "accountablePerson" : {
+            "@type": "Person",
+            "name": "Magnus Toftdal"
+        },
+        "copyrightHolder" : {
+            "@type": "Person",
+            "name": "Magnus Toftdal"
+        },
+        "copyrightYear" : "2024",
+        "dateCreated": "2024-03-12T09:49:23.00Z",
+        "datePublished": "2024-03-12T09:49:23.00Z",
+        "dateModified": "2024-03-12T09:49:23.00Z",
+        "publisher":{
+            "@type":"Organization",
+            "name": "Magnus Toftdal",
+            "url": "http://localhost:1313/",
+            "logo": {
+                "@type": "ImageObject",
+                "url": "http:\/\/localhost:1313\/favicon-32x32.png",
+                "width":"32",
+                "height":"32"
+            }
+        },
+        "image": 
+      [
+      ]
+
+    ,
+        "url" : "http:\/\/localhost:1313\/2024\/installing-k3s\/",
+        "wordCount" : "523",
+        "genre" : [ ],
+        "keywords" : [ ]
+    }
+  </script>
+
+
+</head>
+<body class="body">
+    <div class="wrapper">
+      <aside
+        
+          class="wrapper__sidebar wrapper__sidebar--hidden"
+        
+      ><div
+  class="sidebar
+    animated fadeInDown
+  "
+>
+  <div class="sidebar__content">
+    <div class="sidebar__introduction">
+      <img
+        class="sidebar__introduction-profileimage"
+        src="/images/tofticles.jpg"
+        alt="profile picture"
+      />
+      
+        <div class="sidebar__introduction-title">
+          <a href="/">Adventures of Tofticles</a>
+        </div>
+      
+      <div class="sidebar__introduction-description">
+        <p>There are no silver bullets! <br />Here, have mine<br /></p>
+      </div>
+    </div>
+    <ul class="sidebar__list">
+      
+        <li class="sidebar__list-item">
+          <a
+            href="https://helvede.net/@tofticles"
+            target="_blank"
+            rel="noopener me"
+            aria-label="mastodon"
+            title="mastodon"
+          >
+            <i class="fa-brands fa-mastodon fa-2x" aria-hidden="true"></i>
+          </a>
+        </li>
+      
+        <li class="sidebar__list-item">
+          <a
+            href="https://www.linkedin.com/in/magnus-toftdal/"
+            target="_blank"
+            rel="noopener me"
+            aria-label="Linkedin"
+            title="Linkedin"
+          >
+            <i class="fab fa-linkedin fa-2x" aria-hidden="true"></i>
+          </a>
+        </li>
+      
+        <li class="sidebar__list-item">
+          <a
+            href="mailto:toftdal@hey.com"
+            target="_blank"
+            rel="noopener me"
+            aria-label="e-mail"
+            title="e-mail"
+          >
+            <i class="fas fa-envelope fa-2x" aria-hidden="true"></i>
+          </a>
+        </li>
+      
+    </ul>
+  </div><footer class="footer footer__sidebar">
+  <ul class="footer__list">
+    <li class="footer__item">
+      &copy;
+      
+        Magnus Toftdal
+        2024
+      
+    </li>
+    
+  </ul>
+</footer>
+  
+  <script
+    type="text/javascript"
+    src="/js/medium-zoom.min.1248fa75275e5ef0cbef27e8c1e27dc507c445ae3a2c7d2ed0be0809555dac64.js"
+    integrity="sha256-Ekj6dSdeXvDL7yfoweJ9xQfERa46LH0u0L4ICVVdrGQ="
+    crossorigin="anonymous"
+  ></script></div>
+</aside>
+      <main
+        
+          class="wrapper__main wrapper__main--fullscreen"
+        
+      >
+        <header class="header"><div
+  class="
+    animated fadeInDown
+  "
+>
+  <a role="button" class="navbar-burger" data-target="navMenu" aria-label="menu" aria-expanded="false">
+    <span aria-hidden="true" class="navbar-burger__line"></span>
+    <span aria-hidden="true" class="navbar-burger__line"></span>
+    <span aria-hidden="true" class="navbar-burger__line"></span>
+  </a>
+  <nav class="nav">
+    <ul class="nav__list" id="navMenu">
+      
+      
+        
+        
+          <li class="nav__list-item">
+            
+            <a
+              
+              href="/"
+              
+              title=""
+              >Home</a
+            >
+          </li>
+        
+
+      
+        
+        
+          <li class="nav__list-item">
+            
+            <a
+              
+              href="/index.xml"
+              
+              title=""
+              >RSS</a
+            >
+          </li>
+        
+
+      
+        
+        
+          <li class="nav__list-item">
+            
+            <a
+              
+              href="/about"
+              
+              title=""
+              >About</a
+            >
+          </li>
+        
+
+      
+        
+        
+          <li class="nav__list-item">
+            
+            <a
+              
+              href="/2024"
+              
+              title=""
+              >2024</a
+            >
+          </li>
+        
+
+      
+        
+        
+          <li class="nav__list-item">
+            
+            <a
+              
+              href="/2023"
+              
+              title=""
+              >2023</a
+            >
+          </li>
+        
+
+      
+    </ul>
+    <ul class="nav__list nav__list--end">
+      
+      
+        <li class="nav__list-item">
+          <div class="themeswitch">
+            <a title="Switch Theme">
+              <i class="fas fa-adjust fa-fw" aria-hidden="true"></i>
+            </a>
+          </div>
+        </li>
+      
+    </ul>
+  </nav>
+</div>
+</header>
+  <div
+    class="post 
+      animated fadeInDown
+    "
+  >
+    
+    <div class="post__content">
+      <h1>Installing K3s</h1>
+      <p>I had been doing some reading on <a href="https://kubernetes.io/">Kubernetes</a> and <a href="https://www.rancher.com/">Rancher</a> and stumbled over the <a href="https://k3s.io">K3S</a> project by the Rancher people. It&rsquo;s pretty much perfect for me, getting the full K8S in a nicely wrapped package where I don&rsquo;t actually need to understand all the moving parts of the full Kubernetes experience (and all the choices between competing choices within).</p>
+<p>There is a number of ways to install K3S, but since I wanted to use Rancher on top of it (or beside it? Somewhere in the neighbourhood?), there are a few caveats due to the different versions.</p>
+<h2 id="prereqs">Prereqs</h2>
+<p>You&rsquo;ll need to have curl installed on all nodes as well as either disabling firewalls on the nodes or allowing <a href="https://docs.k3s.io/installation/requirements#networking">specific ports</a>. Since I&rsquo;m using Ubuntu and having no public access - I went with disabling <code>ufw</code> entirely:</p>
+<p><code>sudo ufw disable</code></p>
+<h2 id="extra-parameters-for-the-k3s-install-on-the-control-plane-node">Extra parameters for the K3S install on the control plane node</h2>
+<h4 id="install_k3s_version">INSTALL_K3S_VERSION</h4>
+<p>I took at look at Rancher&rsquo;s <a href="https://www.suse.com/suse-rancher/support-matrix/all-supported-versions/rancher-v2-8-2/">support matrix</a> - and at the time of writing the 2.8.2 version supports K3S in version v1.27 while K3S latest is v1.28, so I had to supply an extra parameter for the K3S script - the <code>INSTALL_K3S_VERSION</code> parameter. K3S follows the Kubernetes versions with an extra version part for their own patches/hotfixes, so for the one I needed working with v1.27 of Kubernetes qua the Rancher support, I looked at the <a href="https://github.com/k3s-io/k3s/releases">releases</a> for K3S for the latest patch - at the time of writing this is <code>v1.27.11+k3s1</code>.</p>
+<h4 id="--cluster-init">&ndash;cluster-init</h4>
+<p>This is optional, but allows for a later upgrade to a High Availability (HA) cluster (basically having at least 3 control plane nodes). For now, I&rsquo;ll skip this as I don&rsquo;t plan to go beyond one control plane nodes and two agent nodes</p>
+<h4 id="k3s_kubeconfig_mode">K3S_KUBECONFIG_MODE</h4>
+<p>The default mode for the kubeconfig is <code>600</code> which means only a root user can read the file. Since I plan to use Rancher on top, I&rsquo;ll change this to <code>644</code> to allow unpriviledged users to read it.</p>
+<h4 id="the-resulting-command-to-install-the-control-plane-of-k3s">The resulting command to install the control plane of K3S</h4>
+<p>I ran this as a root user - not entirely sure it is needed, but I was not interested in fiddling with permissions and a half-installed K3S.</p>
+<p><code>curl -sfL https://get.k3s.io | INSTALL_K3S_VERSION=v1.27.11+k3s1 K3S_KUBECONFIG_MODE=&quot;644&quot; sh -s - server</code></p>
+<h2 id="extra-parameters-for-the-k3s-install-on-the-agent-nodes">Extra parameters for the K3S install on the agent nodes</h2>
+<h4 id="install_k3s_version-1">INSTALL_K3S_VERSION</h4>
+<p>This needs to match the version of the master node - in my case <code>v1.27.11+k3s1</code>.</p>
+<h4 id="k3s_url">K3S_URL</h4>
+<p>This needs to hit port 6443 on (one of) your control plane node(s). For my simple setup, simply the local IP-address of the control plane.</p>
+<h4 id="k3s_token">K3S_TOKEN</h4>
+<p>The token is created when installing the first control plane node and can be located with this simple command - simply copy the result for the K3S_TOKEN parameter:</p>
+<p><code>cat /var/lib/rancher/k3s/server/token</code></p>
+<h4 id="the-resulting-command-to-install-the-agent-nodes-of-k3s">The resulting command to install the agent nodes of K3s</h4>
+<p><code>curl -sfL https://get.k3s.io | INSTALL_K3S_VERSION=v1.27.11+k3s1 K3S_URL=192.168.0.71:6443 K3S_TOKEN=the-token-from-control-plane sh -</code></p>
+<p>And after doing that twice - once for each agent node, everything was working - I verified by issuing <code>kubectl get nodes</code> on the control plane node.</p>
+<p>For something as complicated as Kubernetes, this is manageable even for a newbie such as myself (to both Linux and Kubernetes).</p>
+</div>
+    <div class="post__footer">
+      
+
+      
+    </div>
+
+    
+  </div>
+
+      </main>
+    </div><footer class="footer footer__base">
+  <ul class="footer__list">
+    <li class="footer__item">
+      &copy;
+      
+        Magnus Toftdal
+        2024
+      
+    </li>
+    
+  </ul>
+</footer>
+  
+  <script
+    type="text/javascript"
+    src="/js/medium-zoom.min.1248fa75275e5ef0cbef27e8c1e27dc507c445ae3a2c7d2ed0be0809555dac64.js"
+    integrity="sha256-Ekj6dSdeXvDL7yfoweJ9xQfERa46LH0u0L4ICVVdrGQ="
+    crossorigin="anonymous"
+  ></script></body>
+</html>

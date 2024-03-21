@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html
+  dir="ltr"
+  lang="en"
+  data-theme=""
+  
+    class="html theme--light"
+  
+><head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+  <title>
+    
+      
+        DTOs and Convinience Properties |
+      Magnus Toftdal
+
+  </title>
+
+  
+  <meta charset="utf-8" /><meta name="generator" content="Hugo 0.124.0"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+  <meta name="author" content="Magnus Toftdal" />
+  <meta
+    name="description"
+    content="There are no silver bullets! 
+Here, have mine
+"
+  />
+  
+  
+    
+    
+    <link
+      rel="stylesheet"
+      href="/scss/main.min.772eefee9824c26da5d3828c2507ea318c8e7a37b0b1d18cd4f224edc2755fea.css"
+      integrity="sha256-dy7v7pgkwm2l04KMJQfqMYyOejewsdGM1PIk7cJ1X&#43;o="
+      crossorigin="anonymous"
+      type="text/css"
+    />
+  
+
+  
+  <link
+    rel="stylesheet"
+    href="/css/markupHighlight.min.73ccfdf28df555e11009c13c20ced067af3cb021504cba43644c705930428b00.css"
+    integrity="sha256-c8z98o31VeEQCcE8IM7QZ688sCFQTLpDZExwWTBCiwA="
+    crossorigin="anonymous"
+    type="text/css"
+  />
+  
+    
+    
+    <link
+      rel="stylesheet"
+      href="/css/custom.min.910eb93950d8bbbc989d4d1c78356baa8a2f649e4956e003b91741fe931354b9.css"
+      integrity="sha256-kQ65OVDYu7yYnU0ceDVrqoovZJ5JVuADuRdB/pMTVLk="
+      crossorigin="anonymous"
+      media="screen"
+    />
+  
+  
+  <link
+    rel="stylesheet"
+    href="/fontawesome/css/fontawesome.min.7d272de35b410fb165377550cdf9c4d3a80fbbcc961e111914e4d5c0eaf5729f.css"
+    integrity="sha256-fSct41tBD7FlN3VQzfnE06gPu8yWHhEZFOTVwOr1cp8="
+    crossorigin="anonymous"
+    type="text/css"
+  />
+  
+  <link
+    rel="stylesheet"
+    href="/fontawesome/css/solid.min.55d8333481b07a08e07cf6f37319753a2b47e99f4c395394c5747b48b495aa9b.css"
+    integrity="sha256-VdgzNIGwegjgfPbzcxl1OitH6Z9MOVOUxXR7SLSVqps="
+    crossorigin="anonymous"
+    type="text/css"
+  />
+  
+  <link
+    rel="stylesheet"
+    href="/fontawesome/css/regular.min.a7448d02590b43449364b6b5922ed9af5410abb4de4238412a830316dedb850b.css"
+    integrity="sha256-p0SNAlkLQ0STZLa1ki7Zr1QQq7TeQjhBKoMDFt7bhQs="
+    crossorigin="anonymous"
+    type="text/css"
+  />
+  
+  <link
+    rel="stylesheet"
+    href="/fontawesome/css/brands.min.9ed75a5d670c953fe4df935937674b4646f92674367e9e66eb995bb04e821647.css"
+    integrity="sha256-ntdaXWcMlT/k35NZN2dLRkb5JnQ2fp5m65lbsE6CFkc="
+    crossorigin="anonymous"
+    type="text/css"
+  />
+  
+  <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+
+  <link rel="canonical" href="http://localhost:1313/2023/dtos-and-convinience-properties/" />
+
+  
+  
+  
+  
+  <script
+    type="text/javascript"
+    src="/js/anatole-header.min.f9132794301a01ff16550ed66763482bd848f62243d278f5e550229a158bfd32.js"
+    integrity="sha256-&#43;RMnlDAaAf8WVQ7WZ2NIK9hI9iJD0nj15VAimhWL/TI="
+    crossorigin="anonymous"
+  ></script>
+
+  
+    
+    
+    <script
+      type="text/javascript"
+      src="/js/anatole-theme-switcher.min.d6d329d93844b162e8bed1e915619625ca91687952177552b9b3e211014a2957.js"
+      integrity="sha256-1tMp2ThEsWLovtHpFWGWJcqRaHlSF3VSubPiEQFKKVc="
+      crossorigin="anonymous"
+    ></script>
+  
+
+  
+
+
+  
+  <meta name="twitter:card" content="summary"/><meta name="twitter:title" content="DTOs and Convinience Properties"/>
+<meta name="twitter:description" content="How to make friends with frontenders."/>
+
+
+
+  
+  <meta property="og:title" content="DTOs and Convinience Properties" />
+<meta property="og:description" content="How to make friends with frontenders." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="http://localhost:1313/2023/dtos-and-convinience-properties/" /><meta property="article:section" content="2023" />
+<meta property="article:published_time" content="2023-11-24T14:39:22+01:00" />
+<meta property="article:modified_time" content="2023-11-24T14:39:22+01:00" /><meta property="og:site_name" content="Adventures of Tofticles" />
+
+
+
+  
+  
+  
+  
+  <script type="application/ld+json">
+    {
+        "@context": "http://schema.org",
+        "@type": "BlogPosting",
+        "articleSection": "2023",
+        "name": "DTOs and Convinience Properties",
+        "headline": "DTOs and Convinience Properties",
+        "alternativeHeadline": "",
+        "description": "
+      
+        How to make friends with frontenders.
+
+
+      
+
+
+    ",
+        "inLanguage": "en-us",
+        "isFamilyFriendly": "true",
+        "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "http:\/\/localhost:1313\/2023\/dtos-and-convinience-properties\/"
+        },
+        "author" : {
+            "@type": "Person",
+            "name": "Magnus Toftdal"
+        },
+        "creator" : {
+            "@type": "Person",
+            "name": "Magnus Toftdal"
+        },
+        "accountablePerson" : {
+            "@type": "Person",
+            "name": "Magnus Toftdal"
+        },
+        "copyrightHolder" : {
+            "@type": "Person",
+            "name": "Magnus Toftdal"
+        },
+        "copyrightYear" : "2023",
+        "dateCreated": "2023-11-24T14:39:22.00Z",
+        "datePublished": "2023-11-24T14:39:22.00Z",
+        "dateModified": "2023-11-24T14:39:22.00Z",
+        "publisher":{
+            "@type":"Organization",
+            "name": "Magnus Toftdal",
+            "url": "http://localhost:1313/",
+            "logo": {
+                "@type": "ImageObject",
+                "url": "http:\/\/localhost:1313\/favicon-32x32.png",
+                "width":"32",
+                "height":"32"
+            }
+        },
+        "image": 
+      [
+      ]
+
+    ,
+        "url" : "http:\/\/localhost:1313\/2023\/dtos-and-convinience-properties\/",
+        "wordCount" : "598",
+        "genre" : [ ],
+        "keywords" : [ ]
+    }
+  </script>
+
+
+</head>
+<body class="body">
+    <div class="wrapper">
+      <aside
+        
+          class="wrapper__sidebar wrapper__sidebar--hidden"
+        
+      ><div
+  class="sidebar
+    animated fadeInDown
+  "
+>
+  <div class="sidebar__content">
+    <div class="sidebar__introduction">
+      <img
+        class="sidebar__introduction-profileimage"
+        src="/images/tofticles.jpg"
+        alt="profile picture"
+      />
+      
+        <div class="sidebar__introduction-title">
+          <a href="/">Adventures of Tofticles</a>
+        </div>
+      
+      <div class="sidebar__introduction-description">
+        <p>There are no silver bullets! <br />Here, have mine<br /></p>
+      </div>
+    </div>
+    <ul class="sidebar__list">
+      
+        <li class="sidebar__list-item">
+          <a
+            href="https://helvede.net/@tofticles"
+            target="_blank"
+            rel="noopener me"
+            aria-label="mastodon"
+            title="mastodon"
+          >
+            <i class="fa-brands fa-mastodon fa-2x" aria-hidden="true"></i>
+          </a>
+        </li>
+      
+        <li class="sidebar__list-item">
+          <a
+            href="https://www.linkedin.com/in/magnus-toftdal/"
+            target="_blank"
+            rel="noopener me"
+            aria-label="Linkedin"
+            title="Linkedin"
+          >
+            <i class="fab fa-linkedin fa-2x" aria-hidden="true"></i>
+          </a>
+        </li>
+      
+        <li class="sidebar__list-item">
+          <a
+            href="mailto:toftdal@hey.com"
+            target="_blank"
+            rel="noopener me"
+            aria-label="e-mail"
+            title="e-mail"
+          >
+            <i class="fas fa-envelope fa-2x" aria-hidden="true"></i>
+          </a>
+        </li>
+      
+    </ul>
+  </div><footer class="footer footer__sidebar">
+  <ul class="footer__list">
+    <li class="footer__item">
+      &copy;
+      
+        Magnus Toftdal
+        2024
+      
+    </li>
+    
+  </ul>
+</footer>
+  
+  <script
+    type="text/javascript"
+    src="/js/medium-zoom.min.1248fa75275e5ef0cbef27e8c1e27dc507c445ae3a2c7d2ed0be0809555dac64.js"
+    integrity="sha256-Ekj6dSdeXvDL7yfoweJ9xQfERa46LH0u0L4ICVVdrGQ="
+    crossorigin="anonymous"
+  ></script></div>
+</aside>
+      <main
+        
+          class="wrapper__main wrapper__main--fullscreen"
+        
+      >
+        <header class="header"><div
+  class="
+    animated fadeInDown
+  "
+>
+  <a role="button" class="navbar-burger" data-target="navMenu" aria-label="menu" aria-expanded="false">
+    <span aria-hidden="true" class="navbar-burger__line"></span>
+    <span aria-hidden="true" class="navbar-burger__line"></span>
+    <span aria-hidden="true" class="navbar-burger__line"></span>
+  </a>
+  <nav class="nav">
+    <ul class="nav__list" id="navMenu">
+      
+      
+        
+        
+          <li class="nav__list-item">
+            
+            <a
+              
+              href="/"
+              
+              title=""
+              >Home</a
+            >
+          </li>
+        
+
+      
+        
+        
+          <li class="nav__list-item">
+            
+            <a
+              
+              href="/index.xml"
+              
+              title=""
+              >RSS</a
+            >
+          </li>
+        
+
+      
+        
+        
+          <li class="nav__list-item">
+            
+            <a
+              
+              href="/about"
+              
+              title=""
+              >About</a
+            >
+          </li>
+        
+
+      
+        
+        
+          <li class="nav__list-item">
+            
+            <a
+              
+              href="/2024"
+              
+              title=""
+              >2024</a
+            >
+          </li>
+        
+
+      
+        
+        
+          <li class="nav__list-item">
+            
+            <a
+              
+              href="/2023"
+              
+              title=""
+              >2023</a
+            >
+          </li>
+        
+
+      
+    </ul>
+    <ul class="nav__list nav__list--end">
+      
+      
+        <li class="nav__list-item">
+          <div class="themeswitch">
+            <a title="Switch Theme">
+              <i class="fas fa-adjust fa-fw" aria-hidden="true"></i>
+            </a>
+          </div>
+        </li>
+      
+    </ul>
+  </nav>
+</div>
+</header>
+  <div
+    class="post 
+      animated fadeInDown
+    "
+  >
+    
+    <div class="post__content">
+      <h1>DTOs and Convinience Properties</h1>
+      <p>The code can be found <a href="https://github.com/goblinhero/Anex/pull/29">here</a>.</p>
+<p>So, the focus of this post is the difference between entities and DTOs (Data Transfer Object). The key difference between the two is that the entity is there to support the business ideas and enforce rules - and typically normalized in the database. So, you have complex relationships modelled. DTOs on the other hand is there for the consumer of the API and the rules around them are not near as strict. Typically, they will have little to no logic in them (aside maybe from model validation). And while there is only ever one entity class for a particular business object, there can be many DTOs representing the same entity in different circumstances.</p>
+<p>Consider the following classes:</p>
+<pre><code>public class LedgerPostDraft : BaseEntity&lt;LedgerPostDraft&gt;
+{
+    protected LedgerPostDraft()
+    {
+    }
+
+    private LedgerPostDraft(LedgerDraft ledgerDraft)
+    {
+        LedgerDraft = ledgerDraft;
+    }
+
+    public static LedgerPostDraft Create(LedgerDraft ledgerDraft)
+    {
+        return new LedgerPostDraft(ledgerDraft);
+    }
+    
+    public virtual DateOnly FiscalDate { get; set; }
+    public virtual int? VoucherNumber { get; set; }
+    public virtual decimal Amount { get; set; }
+    public virtual LedgerTag? LedgerTag { get; set; }
+    public virtual LedgerTag? ContraTag { get; set; }
+    public virtual LedgerDraft LedgerDraft { get; protected set; }
+    
+    public virtual bool IsReadyForBookkeeping(FiscalPeriod period, out IEnumerable&lt;string&gt; errors)
+    {
+        return new RuleSet&lt;LedgerPostDraft&gt;(GetBookkeepingRules()).UpholdsRules(this, out errors);
+    }
+    private IEnumerable&lt;IRule&lt;LedgerPostDraft&gt;&gt; GetBookkeepingRules()
+    {
+        yield return CannotBeNull(lpd =&gt; lpd.LedgerTag);
+    }
+}
+
+public class LedgerPostDraftDto : EntityDto
+{
+    [Required]
+    public long LedgerDraftId { get; set; }
+    [Required]
+    public DateOnly FiscalDate { get; set; }
+    public int? VoucherNumber { get; set; }
+    [Required]
+    public decimal Amount { get; set; }
+    public long? LedgerTagId { get; set; }
+    public int? LedgerTagNumber { get; set; }
+    public string? LedgerTagDescription { get;set; }
+    public long? ContraTagId { get; set; }
+    public int? ContraTagNumber { get; set; }
+    public string? ContraTagDescription { get;set; }
+}
+
+public class EditableLedgerPostDraftDto
+{
+    [Required]
+    public long LedgerDraftId { get; set; }
+    [Required]
+    public DateOnly FiscalDate { get; set; }
+    public int? VoucherNumber { get; set; }
+    [Required]
+    public decimal Amount { get; set; }
+    public long? LedgerTagId { get; set; }
+    public long? ContraTagId { get; set; }
+}
+</code></pre>
+<p>Different problems to solve - different implementations. The focus here is on making the intent clear. The <code>LedgerPostDraftDto</code> is designed to be shown in a table or a detail view of the post while <code>EditableLedgerPostDraftDto</code> is only there for the communication when editing the entity through the API. As it is evident, the <code>LedgerPostDraftDto</code> contains convinience properties - instead of the frontend having to send separate queries to the API to get the number and description on the associated ledger tags, we supply them up front.</p>
+<h3 id="why-are-you-not-using-a-mapper-framework-for-the-dtos">Why are you not using a mapper framework for the DTOs?</h3>
+<p>I don&rsquo;t like them. They add another third party dependency for very little benefit in my view. And here, I risk the code resulting in a (up to) SELECT 2N+1 performance problem. (Basically, if I lazy-load 10 LedgerPostDrafts, each of them will try to fetch the associated LedgerTag for the LedgerTag and ContraTag properties resulting in at worst 21 queries to the database which is probably not ideal). Instead, I have made a DB-view that is tailor-made for the DTO and this results in a very clean mapping and no extra roundtrips nor complexity.</p>
+<p>There is no limit to how many different views/DTOs I can have for a single entity, so I could eg. make a view for an auto-complete box with only the <code>.Id</code> and <code>.Description</code>. At the cost of a few extra classes, which is a cost I am (clearly) more than happy to pay.</p>
+</div>
+    <div class="post__footer">
+      
+
+      
+    </div>
+
+    
+  </div>
+
+      </main>
+    </div><footer class="footer footer__base">
+  <ul class="footer__list">
+    <li class="footer__item">
+      &copy;
+      
+        Magnus Toftdal
+        2024
+      
+    </li>
+    
+  </ul>
+</footer>
+  
+  <script
+    type="text/javascript"
+    src="/js/medium-zoom.min.1248fa75275e5ef0cbef27e8c1e27dc507c445ae3a2c7d2ed0be0809555dac64.js"
+    integrity="sha256-Ekj6dSdeXvDL7yfoweJ9xQfERa46LH0u0L4ICVVdrGQ="
+    crossorigin="anonymous"
+  ></script></body>
+</html>

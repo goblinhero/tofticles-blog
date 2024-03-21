@@ -1,4 +1,4 @@
-baseURL = 'https://purple-ocean-0bb2d8e03.4.azurestaticapps.net/'
+baseURL = 'https://tofticles.dk'
 languageCode = 'en-us'
 title = 'The adventures of Tofticles'
 theme = 'anatole'
