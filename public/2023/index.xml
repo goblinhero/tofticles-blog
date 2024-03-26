@@ -1,0 +1,716 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>2023s on The adventures of Tofticles</title>
+    <link>http://localhost:1313/2023/</link>
+    <description>Recent content in 2023s on The adventures of Tofticles</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Fri, 22 Dec 2023 13:22:38 +0100</lastBuildDate><atom:link href="http://localhost:1313/2023/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Azure - More ranting</title>
+      <link>http://localhost:1313/2023/azure-more-ranting/</link>
+      <pubDate>Fri, 22 Dec 2023 13:22:38 +0100</pubDate>
+      
+      <guid>http://localhost:1313/2023/azure-more-ranting/</guid>
+      
+        <description>&lt;p&gt;So, my test subscription ran out. And Azure is a pain in the buttocks to work with when that happens. Ideally, I wanted to just scrap whatever I had and start fresh with a paid subscription.&lt;/p&gt;
+&lt;p&gt;Work had happened, so a couple of weeks had passed after the end of the old subscription - and it turns out, you cannot delete things on a subscription that is suspended. First Wat achieved. It will, however, be automatically deleted at some unknown point in the future when Microsoft gets around to it. Second Wat achieved.&lt;/p&gt;
+&lt;p&gt;Since today is the day I wanted this to work (this blog is supposed to be free to run as Azure has free Static Web Apps - yeah, sorry about the outage, people), I had no option, but to add my credit card to un-suspend the subscription, remove the old crap and then recreate the blog.&lt;/p&gt;
+&lt;p&gt;Oh, and of course there&amp;rsquo;s a bill waiting to happen, because although it was a free account, my suspended applications were still running after the subscription ended&amp;hellip; Third Wat achieved. It&amp;rsquo;s nothing huge, maybe 5€ or so, but it is enough to make me grumble and write up this rant.&lt;/p&gt;
+&lt;p&gt;Oh, and don&amp;rsquo;t get me started on how sluggish things are on the Azure Portal. I create a new subscription, I get an alert that it is created. I cannot create resources on it. I can jump to the subscription, but I cannot create resources on it (it is not present in the dropdown). Fourth Wat achieved. I log out, log back in, now I can see all the deleted things, but not the new subscription.&lt;/p&gt;
+&lt;p&gt;I give it ten minutes, then log out, log back in, and finally I can see my new shiny subscription. Then remove the old Github Action, create a new Static Web App, point it to the repo, fiddle with the DNS and we&amp;rsquo;re back online.&lt;/p&gt;
+&lt;p&gt;But hey, I&amp;rsquo;m off on vacation in half an hour, so it isn&amp;rsquo;t all bad. Happy holidays, everyone!&lt;/p&gt;
+</description>
+      
+    </item>
+    
+    <item>
+      <title>DateOnly Now Patched</title>
+      <link>http://localhost:1313/2023/dateonly-now-patched/</link>
+      <pubDate>Tue, 28 Nov 2023 08:51:49 +0100</pubDate>
+      
+      <guid>http://localhost:1313/2023/dateonly-now-patched/</guid>
+      
+        <description>&lt;p&gt;The code for this post can be found &lt;a href=&#34;https://github.com/goblinhero/Anex/pull/31&#34;&gt;here&lt;/a&gt;. It&amp;rsquo;s basically a bugfix for the feature, explainered &lt;a href=&#34;http://localhost:1313/2023/fiscal-period-and-dates/&#34;&gt;here&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;One thing, I forgot when adding support for DateOnly in the API, is that new types need specific handling in HTTP:PATCH endpoints, since it relies on a Dictionary of JSON values. Luckily, the code is prepared for this exact scenario, so it was a simple matter of adding these two lines:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;new RelayStrategy&amp;lt;JsonElement?, object?&amp;gt;(v =&amp;gt; DateOnly.Parse(v!.Value.GetString()!), _ =&amp;gt; typeof(T) == typeof(DateOnly)),
+new RelayStrategy&amp;lt;JsonElement?, object?&amp;gt;(v =&amp;gt; DateOnly.Parse(v!.Value.GetString()!), _ =&amp;gt; typeof(T) == typeof(DateOnly?)),
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;I haven&amp;rsquo;t really discussed what that &lt;code&gt;DictionaryHelper&lt;/code&gt; -does-. It is basically responsible for converting whichever type is received from the client (in JSON format) and into the type of the relevant property. Right now, the implementation fails silently if the client sends the wrong format, which is not ideal, but for now it will have to suffice.&lt;/p&gt;
+&lt;p&gt;The reason that the implementation is the same for properties that are nullable as well as not, is that we handle null-values in an earlier strategy:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;new RelayStrategy&amp;lt;JsonElement?, object?&amp;gt;(_ =&amp;gt; default(T), v =&amp;gt; !v.HasValue || v.Value.ValueKind == JsonValueKind.Null),
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;So, these two new strategies only need to handle non-null scenarios. As an aside - &lt;code&gt;RelayXxx&lt;/code&gt; is what I call classes that only contains boiler-plate where the logic is injected instead, typically with &lt;code&gt;Func&amp;lt;T&amp;gt;&lt;/code&gt; and &lt;code&gt;Predicate&amp;lt;T&amp;gt;&lt;/code&gt;.&lt;/p&gt;
+</description>
+      
+    </item>
+    
+    <item>
+      <title>Collections and ORMs</title>
+      <link>http://localhost:1313/2023/collections-and-orms/</link>
+      <pubDate>Mon, 27 Nov 2023 12:31:04 +0100</pubDate>
+      
+      <guid>http://localhost:1313/2023/collections-and-orms/</guid>
+      
+        <description>&lt;p&gt;This is a bit of an aside, but there is still a bit of code &lt;a href=&#34;https://github.com/goblinhero/Anex/pull/30&#34;&gt;here&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;The naive approach to solving the mapping between the relational structure and the object ditto is to have bidirectional mappings, where the child has a property for the parent and the parent has a colleciton of childs.&lt;/p&gt;
+&lt;h3 id=&#34;the-challenges-with-bi-directional&#34;&gt;The challenges with bi-directional&lt;/h3&gt;
+&lt;p&gt;Let&amp;rsquo;s say you have an order with order lines. If you have a bi-directional relationship, you run the risk of a child pointing at the wrong parent - or several parents having the same child in their respective collections. It is not unsolvable, but it is something that needs constant energy to ensure since the object model does not care, but the relational one does.&lt;/p&gt;
+&lt;h3 id=&#34;problematic-collections-in-general&#34;&gt;Problematic collections in general&lt;/h3&gt;
+&lt;p&gt;So, let&amp;rsquo;s say you have the same order with order lines. You&amp;rsquo;ve cleverly made the order line a component, so it does not have an &lt;code&gt;.Id&lt;/code&gt;, but rather an &lt;code&gt;.OrderId&lt;/code&gt;. Basically, the order is in charge of saving, updating and deleting orderlines. Now, everytime you need to touch one of the orderlines, you need to first load the order, get all the orderlines, do your changes and save the changes back to the database to ensure it is still in a valid state.&lt;/p&gt;
+&lt;p&gt;Also, if you have the same structure in your API, you risk a 3rd party developer deleting the orderlines everytime they update the order head properties, because they mistakenly sent an empty list along with the order. Also, paging is a pain in the bottocks - basically, you need to a) load the entire collection and then do paging to the client or b) do custom shenanigans where you allow it on reads, but not writes.&lt;/p&gt;
+&lt;h3 id=&#34;an-alternative&#34;&gt;An alternative&lt;/h3&gt;
+&lt;p&gt;So, what do we do - we need to have parent/child objects - there is no way around it. Well, when it is at all possible, I go with the child knowing about the parent but not the other way around. So, the order line has an &lt;code&gt;.OrderId&lt;/code&gt;, but the order only operates on orderlines with statechanges, so a typical method would look like this:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;public void Deliver(ICollection&amp;lt;OrderLine&amp;gt; orderLines)
+{
+    //Handle the state-change
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Funnily, this makes it a lot easier to support things like partial delivery (you simply only supply the lines that need to be delivered now - and invoke the method with a secondary set, later). This is not without cost, though. Things like ordering can become a pain (as in, if the order of the orderlines is important, you do not have a centralized place to enforce this).&lt;/p&gt;
+&lt;h3 id=&#34;dont-you-have--any--collection&#34;&gt;Don&amp;rsquo;t you have -any- collection?&lt;/h3&gt;
+&lt;p&gt;Well, as always, there are caveats - for things like &lt;code&gt;EconomicTransaction&lt;/code&gt; in Anex, it actually has a collection of &lt;code&gt;LedgerPost&lt;/code&gt;, because it&amp;rsquo;s validity is dependant on the state of the LedgerPosts. Roughly speaking, things that are immutable (business-wise) - write once, read often tend to be with collections - and otherwise, the child knows about the parent. But the most important is not having bidirectional relationships if at all possible - it is a huge complexity cost and you gain very little for it.&lt;/p&gt;
+</description>
+      
+    </item>
+    
+    <item>
+      <title>DTOs and Convinience Properties</title>
+      <link>http://localhost:1313/2023/dtos-and-convinience-properties/</link>
+      <pubDate>Fri, 24 Nov 2023 14:39:22 +0100</pubDate>
+      
+      <guid>http://localhost:1313/2023/dtos-and-convinience-properties/</guid>
+      
+        <description>&lt;p&gt;The code can be found &lt;a href=&#34;https://github.com/goblinhero/Anex/pull/29&#34;&gt;here&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;So, the focus of this post is the difference between entities and DTOs (Data Transfer Object). The key difference between the two is that the entity is there to support the business ideas and enforce rules - and typically normalized in the database. So, you have complex relationships modelled. DTOs on the other hand is there for the consumer of the API and the rules around them are not near as strict. Typically, they will have little to no logic in them (aside maybe from model validation). And while there is only ever one entity class for a particular business object, there can be many DTOs representing the same entity in different circumstances.&lt;/p&gt;
+&lt;p&gt;Consider the following classes:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;public class LedgerPostDraft : BaseEntity&amp;lt;LedgerPostDraft&amp;gt;
+{
+    protected LedgerPostDraft()
+    {
+    }
+
+    private LedgerPostDraft(LedgerDraft ledgerDraft)
+    {
+        LedgerDraft = ledgerDraft;
+    }
+
+    public static LedgerPostDraft Create(LedgerDraft ledgerDraft)
+    {
+        return new LedgerPostDraft(ledgerDraft);
+    }
+    
+    public virtual DateOnly FiscalDate { get; set; }
+    public virtual int? VoucherNumber { get; set; }
+    public virtual decimal Amount { get; set; }
+    public virtual LedgerTag? LedgerTag { get; set; }
+    public virtual LedgerTag? ContraTag { get; set; }
+    public virtual LedgerDraft LedgerDraft { get; protected set; }
+    
+    public virtual bool IsReadyForBookkeeping(FiscalPeriod period, out IEnumerable&amp;lt;string&amp;gt; errors)
+    {
+        return new RuleSet&amp;lt;LedgerPostDraft&amp;gt;(GetBookkeepingRules()).UpholdsRules(this, out errors);
+    }
+    private IEnumerable&amp;lt;IRule&amp;lt;LedgerPostDraft&amp;gt;&amp;gt; GetBookkeepingRules()
+    {
+        yield return CannotBeNull(lpd =&amp;gt; lpd.LedgerTag);
+    }
+}
+
+public class LedgerPostDraftDto : EntityDto
+{
+    [Required]
+    public long LedgerDraftId { get; set; }
+    [Required]
+    public DateOnly FiscalDate { get; set; }
+    public int? VoucherNumber { get; set; }
+    [Required]
+    public decimal Amount { get; set; }
+    public long? LedgerTagId { get; set; }
+    public int? LedgerTagNumber { get; set; }
+    public string? LedgerTagDescription { get;set; }
+    public long? ContraTagId { get; set; }
+    public int? ContraTagNumber { get; set; }
+    public string? ContraTagDescription { get;set; }
+}
+
+public class EditableLedgerPostDraftDto
+{
+    [Required]
+    public long LedgerDraftId { get; set; }
+    [Required]
+    public DateOnly FiscalDate { get; set; }
+    public int? VoucherNumber { get; set; }
+    [Required]
+    public decimal Amount { get; set; }
+    public long? LedgerTagId { get; set; }
+    public long? ContraTagId { get; set; }
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Different problems to solve - different implementations. The focus here is on making the intent clear. The &lt;code&gt;LedgerPostDraftDto&lt;/code&gt; is designed to be shown in a table or a detail view of the post while &lt;code&gt;EditableLedgerPostDraftDto&lt;/code&gt; is only there for the communication when editing the entity through the API. As it is evident, the &lt;code&gt;LedgerPostDraftDto&lt;/code&gt; contains convinience properties - instead of the frontend having to send separate queries to the API to get the number and description on the associated ledger tags, we supply them up front.&lt;/p&gt;
+&lt;h3 id=&#34;why-are-you-not-using-a-mapper-framework-for-the-dtos&#34;&gt;Why are you not using a mapper framework for the DTOs?&lt;/h3&gt;
+&lt;p&gt;I don&amp;rsquo;t like them. They add another third party dependency for very little benefit in my view. And here, I risk the code resulting in a (up to) SELECT 2N+1 performance problem. (Basically, if I lazy-load 10 LedgerPostDrafts, each of them will try to fetch the associated LedgerTag for the LedgerTag and ContraTag properties resulting in at worst 21 queries to the database which is probably not ideal). Instead, I have made a DB-view that is tailor-made for the DTO and this results in a very clean mapping and no extra roundtrips nor complexity.&lt;/p&gt;
+&lt;p&gt;There is no limit to how many different views/DTOs I can have for a single entity, so I could eg. make a view for an auto-complete box with only the &lt;code&gt;.Id&lt;/code&gt; and &lt;code&gt;.Description&lt;/code&gt;. At the cost of a few extra classes, which is a cost I am (clearly) more than happy to pay.&lt;/p&gt;
+</description>
+      
+    </item>
+    
+    <item>
+      <title>Continious Refactoring</title>
+      <link>http://localhost:1313/2023/continious-refactoring/</link>
+      <pubDate>Fri, 24 Nov 2023 08:46:08 +0100</pubDate>
+      
+      <guid>http://localhost:1313/2023/continious-refactoring/</guid>
+      
+        <description>&lt;p&gt;The code for this post can be found &lt;a href=&#34;https://github.com/goblinhero/Anex/pull/28&#34;&gt;here&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;If you&amp;rsquo;ve been following along and read some of the pull requests, you may have noticed that I refactor judiciously. Not everyone agrees with this approach, but in my mind it follows the Boyscout principle: &amp;ldquo;Leave the code better than when you checked it out&amp;rdquo;. Over time, it leads to a couple of things:&lt;/p&gt;
+&lt;h3 id=&#34;a-thousand-small-pains-leaves-you-stronger&#34;&gt;A thousand small pains leaves you stronger&lt;/h3&gt;
+&lt;p&gt;Over time, you&amp;rsquo;ll build up a way of doing refactorings safely. In this early part of the lifetime of the code, it is safer to do refactorings, change your mind, find better approaches etc. etc. And you get a &amp;lsquo;feel&amp;rsquo; for the code-base - as in, you develop your own best practises, preferences and will have an easier time arguing for your choices since you most likely will have either felt the pain of doing it in another way or at least seen the drawbacks.&lt;/p&gt;
+&lt;h3 id=&#34;the-three-steps-of-efficient-coding&#34;&gt;The three steps of efficient coding&lt;/h3&gt;
+&lt;p&gt;In the eternal words of a previous &lt;a href=&#34;http://twinoak.dk/&#34;&gt;boss&lt;/a&gt;, &amp;ldquo;First make it work, then make it pretty and finally, make it fast&amp;rdquo;. Much of our work is creating something &amp;rsquo;new&amp;rsquo;, as in we haven&amp;rsquo;t tried it before. Someone else might have done something similar, but likely not exactly the same. So we steal their code from &lt;a href=&#34;https://stackoverflow.com/&#34;&gt;Stack Overflow&lt;/a&gt; - we get a shaky &amp;lsquo;solution&amp;rsquo; up and running that on a sunny day, in perfect wind conditions, sort of does what we want. Then we start adding a foundation, extract into classes, generalize etc. etc. Once that is done - we start looking at optimization where necessary, often compromizing on the beauty - like denormalizing database tables, doing raw sql and so on.&lt;/p&gt;
+&lt;h3 id=&#34;more-maintainable-code&#34;&gt;More maintainable code&lt;/h3&gt;
+&lt;p&gt;Since we take the small pain of refactoring things when we notice them, we avoid having the technical debt get to the level of &amp;ldquo;Might be worthwhile to do a re-write&amp;rdquo;. If we continiously keep the libraries up-to-date, update to newer versions of .NET - it is much easier to notice what broke the build.&lt;/p&gt;
+&lt;h3 id=&#34;how-to-avoid-breaking-things&#34;&gt;How to avoid breaking things&lt;/h3&gt;
+&lt;p&gt;Once we are at a more stable stage in development, it becomes increasingly important to not have things break - and there is only one answer to this problem. Tests. And if that fails, more tests.&lt;/p&gt;
+</description>
+      
+    </item>
+    
+    <item>
+      <title>DateOnly in Ef Core</title>
+      <link>http://localhost:1313/2023/dateonly-in-ef-core/</link>
+      <pubDate>Fri, 24 Nov 2023 07:57:18 +0100</pubDate>
+      
+      <guid>http://localhost:1313/2023/dateonly-in-ef-core/</guid>
+      
+        <description>&lt;p&gt;&lt;a href=&#34;http://localhost:1313/2023/fiscal-period-and-dates/&#34;&gt;Here&lt;/a&gt;, I wrote about support for DateOnly in NHibernate and the lacking support in EF Core - I&amp;rsquo;ve since looked into the matter.&lt;/p&gt;
+&lt;p&gt;There is indeed support for DateOnly in EF Core&amp;hellip; Now, in .NET 8. Two major versions after DateOnly and TimeOnly were introduced in .NET 6. If you&amp;rsquo;re stuck on a previous version, &lt;a href=&#34;https://erikej.github.io/&#34;&gt;ErikEJ&lt;/a&gt; has a solution &lt;a href=&#34;https://erikej.github.io/efcore/sqlserver/2023/09/03/efcore-dateonly-timeonly.html&#34;&gt;here&lt;/a&gt; (including a nice &lt;a href=&#34;https://www.nuget.org/packages/ErikEJ.EntityFrameworkCore.SqlServer.DateOnlyTimeOnly&#34;&gt;Nuget package&lt;/a&gt;).&lt;/p&gt;
+&lt;p&gt;All rejoice!&lt;/p&gt;
+</description>
+      
+    </item>
+    
+    <item>
+      <title>Fiscal Period and Dates</title>
+      <link>http://localhost:1313/2023/fiscal-period-and-dates/</link>
+      <pubDate>Thu, 23 Nov 2023 14:39:18 +0100</pubDate>
+      
+      <guid>http://localhost:1313/2023/fiscal-period-and-dates/</guid>
+      
+        <description>&lt;p&gt;The code can be found &lt;a href=&#34;https://github.com/goblinhero/Anex/pull/27&#34;&gt;here&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;If you haven&amp;rsquo;t watched &lt;a href=&#34;https://www.youtube.com/watch?v=-5wpm-gesOY&#34;&gt;Tom Scott&lt;/a&gt;, yet - go do so. You&amp;rsquo;ll come back knowing at least a bit about the pains we are talking about when it comes to handling date and time.&lt;/p&gt;
+&lt;p&gt;In accounting we use economical dates, ie. there is no time part. Same as you do with your birthday - you (probably) don&amp;rsquo;t keep track at which point in the day you actually started breathing oxygen. Time-zones are a constant pain if you use the built-in &lt;code&gt;DateTime&lt;/code&gt; type in C#, because a DateTime can be in one of three states:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;Local           Basically, what is the time according to the server&#39;s timezone taking into account DST and all that crap. (important distinction - your client might be in another zone)
+Utc             Basically, what is the time on the date-line - also known as Zulu-time (this is used by the military among others when we -really- don&#39;t want to arrive an hour late or early)
+Unspecified     Yeah, this one is wonky - basically, we have not (yet) decided (sadly, this is the default)
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h3 id=&#34;databases-are-smart&#34;&gt;Databases are smart&lt;/h3&gt;
+&lt;p&gt;For as long as I can remember, databases have supported date-only columns (for good reason - back then storage was -expensive-, so if you could save a few bytes here and there, you absolutely did!). MSSQL, PostGres, MySQL and MariaDB calls it date as the data type.&lt;/p&gt;
+&lt;h3 id=&#34;enter-dateonly-to-save-the-day&#34;&gt;Enter DateOnly to save the day?&lt;/h3&gt;
+&lt;p&gt;In .NET 6, Microsoft added DateOnly and TimeOnly. All celebrate - however, as is sometimes the issue, the type was introduced, but support for it? Not-so-much. The default serializer does not support it. Entity Framework does not support it. NHibernate does not support it. The list goes on. For SwashBuckle and the serializer, &lt;a href=&#34;https://www.nuget.org/profiles/maxc137&#34;&gt;maxc137&lt;/a&gt; has come to the rescue with his &lt;a href=&#34;https://www.nuget.org/packages/DateOnlyTimeOnly.AspNet&#34;&gt;NuGet package&lt;/a&gt;. Brilliant work - easy to install and the code does what it needs to do. Just remember to update your SwashBuckle version to at least 6.5.0 (or use the extra syntax as maxc137 writes on NuGet).&lt;/p&gt;
+&lt;p&gt;Honestly, I do not know how to add support in EF Core, but I do know how to do so in NHibernate - they have IUserType. Before this I already use it for DateTimes to ensure they are stored in UTC. The implementation can be found in the PR, it is not rocket science, so should be fairly easy to implement. And now we have Fiscal Periods in Anex.&lt;/p&gt;
+</description>
+      
+    </item>
+    
+    <item>
+      <title>Explicit Trumps Implicit</title>
+      <link>http://localhost:1313/2023/explicit-trumps-implicit/</link>
+      <pubDate>Thu, 23 Nov 2023 12:08:04 +0100</pubDate>
+      
+      <guid>http://localhost:1313/2023/explicit-trumps-implicit/</guid>
+      
+        <description>&lt;p&gt;The code can be found &lt;a href=&#34;https://github.com/goblinhero/Anex/pull/26&#34;&gt;here&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;Things are easier now than ever for documenting your API properly. While I am not generally a fan of attributes, they do good service in Dto&amp;rsquo;s and &lt;code&gt;ProducesResponse&lt;/code&gt; decorations of your controllers. It makes it a lot easier for third party developers to use your API, when you are clear and concise in your communication. In olden days, we wrote comments all over the place - which over time typically became out-of-date or downright misleading when a hotfix wasn&amp;rsquo;t documented and so on.&lt;/p&gt;
+&lt;p&gt;The more you can avoid a developer scratching their head, the happier they are. As one of my former colleagues used to say: &amp;ldquo;Write your code like a psycho is the one to maintain it and they have your home address&amp;rdquo;.&lt;/p&gt;
+&lt;p&gt;By using these attributes, you also make it possible to auto-generate clients for your code instead of you having to maintain them yourself.&lt;/p&gt;
+</description>
+      
+    </item>
+    
+    <item>
+      <title>To REST or Not to REST</title>
+      <link>http://localhost:1313/2023/to-rest-or-not-to-rest/</link>
+      <pubDate>Thu, 23 Nov 2023 10:07:39 +0100</pubDate>
+      
+      <guid>http://localhost:1313/2023/to-rest-or-not-to-rest/</guid>
+      
+        <description>&lt;p&gt;First rule of Representational State Transfer - noone agrees what it -is-; everyone has their own definition and opinions. One of the problem areas concern how to use uri&amp;rsquo;s:&lt;/p&gt;
+&lt;p&gt;According to &lt;a href=&#34;https://learn.microsoft.com/en-us/azure/architecture/best-practices/api-design#organize-the-api-design-around-resources&#34;&gt;Microsoft&lt;/a&gt; - it is simple:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;https://adventure-works.com/orders // Good
+https://adventure-works.com/create-order // Avoid
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Okay, would have helped if they wrote that we are talking about HTTP:POST (ie creating orders), but sure - DRY (Don&amp;rsquo;t Repeat Yourself) is usually a good practise - that would lead to:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;HTTP:GET    Reading stuff (don&#39;t change anything, GDI!)
+HTTP:POST   Creating stuff (new stuff)
+HTTP:PUT    Update stuff (read: replace in it&#39;s entirety)
+HTTP:PATCH  Update stuff (but be lazy about it - no sense listing all the things that hasn&#39;t changed)
+HTTP:DELETE Delete stuff
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;And I tend to agree. This is a good starting point. But right now, if we only have five different ways to do things with a given resource, what if we want two different ways of creating this stuff?&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;HTTP:POST   /copy_from/{id}
+HTTP:POST   /
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Or even worse - we have a thing and we can do things to it (with side-effects):&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;HTTP:PATCH  orders/{id} (the general one)
+HTTP:PATCH  orders/{id}/deliver
+HTTP:PATCH  orders/{id}/cancel
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Are we breaking the rules? Should we be ashamed? I&amp;rsquo;d argue.. &amp;lsquo;No&amp;rsquo;. We are being expressive about what is possible to do and what the consequences are. The POST example is clear that we are creating a new thing (HTTP:POST) and that we are copying the state of another of the same thing with .Id being {id}. With the PATCH example - we are being public about what can be done with the Order. We are telling the user of our API, that we are not deleting anything (PATCH) with the /cancel endpoint, but the state will change.&lt;/p&gt;
+&lt;p&gt;The alternative would be to basically have a switch-case in our endpoints and littering our DTOs with properties for the action that can be taken. We&amp;rsquo;d have made it more obscure (what happens if I set both deliver:true and cancel:true in the body?) and have inflicted real, physical pain on the developer having to a) code this and b) maintain it.&lt;/p&gt;
+</description>
+      
+    </item>
+    
+    <item>
+      <title>Put and Patch</title>
+      <link>http://localhost:1313/2023/put-and-patch/</link>
+      <pubDate>Wed, 22 Nov 2023 14:40:34 +0100</pubDate>
+      
+      <guid>http://localhost:1313/2023/put-and-patch/</guid>
+      
+        <description>&lt;p&gt;You can see my implementation PR &lt;a href=&#34;https://github.com/goblinhero/Anex/pull/25&#34;&gt;here&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;The HTTP RPC supports five keywords - and it is all about intentions:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;GET     - Non-destructive, returns a resource
+POST    - Creates a new resource and perhaps returns the created resource
+PUT     - Replaces a resource and perhaps returns the resource
+PATCH   - Updates single properties for the resource and perhaps returns the updated resource
+DELETE  - Deletes a resource
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Where PATCH is the newest. I remember a time where we had only GET and POST to choose from.&lt;/p&gt;
+&lt;h3 id=&#34;why-would-you-support-both-put-and-patch-for-the-same-resource&#34;&gt;Why would you support both PUT and PATCH for the same resource?&lt;/h3&gt;
+&lt;p&gt;This is all about supporting the users of your API - let&amp;rsquo;s say you are a productive company and your API evolves over time. New properties come along - your integration partner made an integration back in June and really does not want to update it since all the new things have nothing to do with their functionality.&lt;/p&gt;
+&lt;p&gt;Should they have to update his integration just because you added new (optional) functionality?&lt;/p&gt;
+&lt;h3 id=&#34;but-wheres-the-problem&#34;&gt;But where&amp;rsquo;s the problem?&lt;/h3&gt;
+&lt;p&gt;We are working in C#, here - and as soon as we publish an endpoint like this:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;[HttpPut(&amp;quot;{id}/{version}&amp;quot;)]
+public async Task&amp;lt;IActionResult&amp;gt; Update(long id, int version, EditableLedgerTagDto dto)
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Our contract is:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;public class EditableLedgerTagDto
+{
+    public string? Description { get; set; }
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;So, for all intents and purposes, we expect the &lt;code&gt;Description&lt;/code&gt; to be present - if it isn&amp;rsquo;t we fill it out with &amp;hellip; &lt;code&gt;null&lt;/code&gt; (technically, this is what C# with default serializer settings does). When we then update our contract to look like this:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;public class EditableLedgerTagDto
+{
+    public string? Description { get; set; }
+    public int? Number { get; set; }
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Our poor integration partner will be overriding our values for &lt;code&gt;Number&lt;/code&gt; with null-values. Not ideal. Enter PATCH - which allows partial updates. The trouble is that C# only sort of has support for dynamic things (we are still in a statically typed world), so our contract looks like this:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;[HttpPatch(&amp;quot;{id}/{version}&amp;quot;)]
+public async Task&amp;lt;IActionResult&amp;gt; Patch(long id, int version, Dictionary&amp;lt;string, JsonElement&amp;gt; updates)
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Which isn&amp;rsquo;t particularly helpful. But when we include both a PATCH and PUT endpoint, we allow the integration developer to see which are possible (PUT) and update the ones they know how to fill (PATCH). Huh. We get to have our cake and eat it too - it is a good day.&lt;/p&gt;
+</description>
+      
+    </item>
+    
+    <item>
+      <title>Proper DB Migrations - Part deux: Implementation</title>
+      <link>http://localhost:1313/2023/proper-db-migrations-2/</link>
+      <pubDate>Wed, 22 Nov 2023 11:43:12 +0100</pubDate>
+      
+      <guid>http://localhost:1313/2023/proper-db-migrations-2/</guid>
+      
+        <description>&lt;p&gt;Database migrations is a constant head-ache for every developer creating applications that handle any meaningfull amount of data. Over time, with functionality changes, the database structure needs to be kept in sync.&lt;/p&gt;
+&lt;p&gt;SQL databases are by definition rigid and require things to be done in the proper order. There are constraints and conventions, you need to adhere to, and mistakes are costly. Having the code and database out of sync can have consequences ranging from annoying (certain calls fail) over bad (the application refuses to start) to catastrophic (mangled or lost data). Having a way to roll back is paramount to get back into a working state while you figure out what went wrong. Customers tend to take issue with down-time and data-loss.&lt;/p&gt;
+&lt;h3 id=&#34;the-three-stage-deployment-model&#34;&gt;The three-stage deployment model&lt;/h3&gt;
+&lt;p&gt;This is not something I&amp;rsquo;ve come up with, but it is a good idea. It is not required to use CI/CD for this model, but it is highly recommended.&lt;/p&gt;
+&lt;h4 id=&#34;step-one-add-support-in-the-database-for-the-new-code-model&#34;&gt;Step one: Add support in the database for the new code model&lt;/h4&gt;
+&lt;p&gt;Usually, this involves creating new fields on existing tables, new tables and so on. Usually, on existing tables, fields will be nullable.&lt;/p&gt;
+&lt;h4 id=&#34;step-two-update-the-code-to-use-the-new-database-model&#34;&gt;Step two: Update the code to use the new database model&lt;/h4&gt;
+&lt;p&gt;This typically involves having the code use the new facilities for new data - and as part of the deployment, it is also common to update existing data with default or calculated values.&lt;/p&gt;
+&lt;h4 id=&#34;step-three-clean-up-and-finalizing-the-db-model&#34;&gt;Step three: Clean-up and finalizing the DB-model&lt;/h4&gt;
+&lt;p&gt;This is where you enforce the constraints on the DB, change the columns to be not-nullable, setting defaults where they are missing.&lt;/p&gt;
+&lt;h4 id=&#34;caveats&#34;&gt;Caveats&lt;/h4&gt;
+&lt;p&gt;This deployment model involves (at least) three discrete deployments when there are significant database changes. Consider having development cycles of a month+. It&amp;rsquo;s not a nice place to be, so this model is much more feasable for CI/CD-invoked projects.&lt;/p&gt;
+&lt;h3 id=&#34;how-to-deploy&#34;&gt;How to deploy?&lt;/h3&gt;
+&lt;p&gt;I&amp;rsquo;ve chosen (for now) to have a controller for the up and down endpoints. Ideally, at least the up part should be part of the deployment pipeline. The tricky part is the down endpoint - if a deployment goes wrong, but the migrations went well - you can risk having a deployment unable to do the rollback - and the previous version doesn&amp;rsquo;t know about the way to roll back the database migration. The problem is not as great if you use the model outlined above, but you still want to be able to recover, gracefully, should disaster strike. In the past, I&amp;rsquo;ve usually had a console app or similar, able to do the rollback if the deployed code is in a non-working state.&lt;/p&gt;
+</description>
+      
+    </item>
+    
+    <item>
+      <title>Proper DB Migrations - Part one: Preparations</title>
+      <link>http://localhost:1313/2023/proper-db-migrations/</link>
+      <pubDate>Wed, 22 Nov 2023 10:15:03 +0100</pubDate>
+      
+      <guid>http://localhost:1313/2023/proper-db-migrations/</guid>
+      
+        <description>&lt;p&gt;The code for this post can be found &lt;a href=&#34;https://github.com/goblinhero/Anex/pull/23&#34;&gt;here&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;As earlier advertised, I had put in a SchemaExport for easy early testing, but now is the time to find something more robust: Enter &lt;a href=&#34;https://fluentmigrator.github.io/index.html&#34;&gt;FluentMigrator&lt;/a&gt;.&lt;/p&gt;
+&lt;h3 id=&#34;whats-it-do&#34;&gt;What&amp;rsquo;s it do?&lt;/h3&gt;
+&lt;p&gt;It&amp;rsquo;s a thin wrapper around raw SQL with a fluent interface, so instead of writing migrations with raw SQL with all the pitfalls that entails, you get a nice syntax, options for reusing snippets and so on. I&amp;rsquo;ve used it in the past and have been pretty satisfied with the simplicity of it all.&lt;/p&gt;
+&lt;h3 id=&#34;the-fun-of-postgres&#34;&gt;The &amp;lsquo;fun&amp;rsquo; of PostGres&lt;/h3&gt;
+&lt;p&gt;I&amp;rsquo;m not terribly fond of a few things about PostGres - I understand why it is as it is, but that does not have me liking it. I&amp;rsquo;m talking about the case-sensitivity on all levels. So, &lt;code&gt;SELECT version FROM ...&lt;/code&gt; could work while &lt;code&gt;SELECT Version FROM ...&lt;/code&gt; wouldn&amp;rsquo;t. This means you have to be a bit more careful about your migrations to have it fit with NHibernate&amp;rsquo;s expectations - and coming from a MSSQL background, it will take some getting used to.&lt;/p&gt;
+&lt;h3 id=&#34;ids---the-eternal-question&#34;&gt;Id&amp;rsquo;s - the eternal question&lt;/h3&gt;
+&lt;p&gt;There&amp;rsquo;s pros and cons to everything, but let&amp;rsquo;s compare the (most common) options:&lt;/p&gt;
+&lt;h4 id=&#34;emails-strings-and-other-natural-keys&#34;&gt;Emails, strings and other natural keys&lt;/h4&gt;
+&lt;p&gt;Don&amp;rsquo;t. Just don&amp;rsquo;t. It&amp;rsquo;s 2023, you should know better.&lt;/p&gt;
+&lt;h4 id=&#34;guids&#34;&gt;Guids&lt;/h4&gt;
+&lt;p&gt;Guids are an interesting option. They offer (the potential for) idempotency, ie. protection from clients accidently calling twice with the same data on a HTTP:POST endpoint and making doubles. This requires that the clients set the id before invoking the request. It&amp;rsquo;s a loss of control but with quite nice benefits.&lt;/p&gt;
+&lt;p&gt;Guids are, however, notorious for destroying index-performance on databases, since they are random in nature - so the physical storage of the rows can be terribly inefficient. It can be worked around, either by forcing the Database to reindex or in part by using sequential* guids.&lt;/p&gt;
+&lt;h4 id=&#34;int64&#34;&gt;Int64&lt;/h4&gt;
+&lt;p&gt;Longs are another fairly decent option. They offer human readability, consider:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;/api/ledgertag/5433/posts
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;vs.&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;/api/ledgertag/599f5149-6ee9-4e66-b499-804ca0fd428d/posts
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Longs take up 4 bytes vs. Guids 16 bytes which is a significant difference, but not one large enough to settle the argument except for very specific cases.&lt;/p&gt;
+&lt;h4 id=&#34;db-generated-vs-assigned&#34;&gt;DB-generated vs. assigned&lt;/h4&gt;
+&lt;p&gt;Guids offer both options out of the box while you have to add the assigned model for longs (keeping track of the next number is the problem). The problem with DB-generated is generally that you need two roundtrips every-time you insert a row (since you need to retrieve the assigned id, afterwards) and handling bulk-inserts can be tricky.&lt;/p&gt;
+&lt;p&gt;For this project, I&amp;rsquo;ll be using longs, mostly due to the readability and I&amp;rsquo;ll use NHibernate&amp;rsquo;s built-in option for using sequences with the &lt;a href=&#34;https://www.thomashuysmans.be/nhibernate-hilo/&#34;&gt;HiLo&lt;/a&gt; algoritm.&lt;/p&gt;
+&lt;p&gt;* basically, the first part of the Guid is replaced by a time-dependant portion, so all ids created in the same time-period will be near each other in the index.&lt;/p&gt;
+</description>
+      
+    </item>
+    
+    <item>
+      <title>Post Mortem: The tests broke the Build</title>
+      <link>http://localhost:1313/2023/post-mortem-tests-broke-the-build/</link>
+      <pubDate>Tue, 21 Nov 2023 14:50:42 +0100</pubDate>
+      
+      <guid>http://localhost:1313/2023/post-mortem-tests-broke-the-build/</guid>
+      
+        <description>&lt;p&gt;The code for this post can be found &lt;a href=&#34;https://github.com/goblinhero/Anex/pull/22&#34;&gt;here&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;I added tests to the project (you can find the introduction &lt;a href=&#34;http://localhost:1313/2023/adding-tests-to-pipeline/&#34;&gt;here&lt;/a&gt;) and managed to completely miss that I broke the build. I first noticed when I was trying to test the real database in production and suddenly my api was no where to be found.&lt;/p&gt;
+&lt;h3 id=&#34;first-rule-of-panic-club---blame-the-host&#34;&gt;First rule of panic club - blame the host&lt;/h3&gt;
+&lt;p&gt;A few commits had been added to the main branch since I added the test, and the tests weren&amp;rsquo;t really on my radar as the culprit. I had added Application Insights to the project in the mean time, so I was -sure- that must have been the breaking change. So, after cleaning up after that (and that is quite a lot of crap it adds in the environment) - still no dice. Honestly, I&amp;rsquo;m still not entirely sure if I&amp;rsquo;ve removed everything relating to Application Insights.&lt;/p&gt;
+&lt;h3 id=&#34;rolling-back-what-do-you-mean-no&#34;&gt;Rolling back. What do you mean &amp;rsquo;no&amp;rsquo;?!&lt;/h3&gt;
+&lt;p&gt;Next step was trying to roll back until I found a working version. And this is when I found out that such is not supported. I mean .. wat?! You have to have deployment slots or run on the Kubernetes platform to have such cutting-edge tech. And with deployment slots, you get one shot. Tough shit if you find out two versions or later down the line. So, yeah - don&amp;rsquo;t use Web Apps for Production if you do releases by CI/CD. It&amp;rsquo;s simply too risky.&lt;/p&gt;
+&lt;h3 id=&#34;searching-for-needles-in-the-haystack&#34;&gt;Searching for needles in the haystack&lt;/h3&gt;
+&lt;p&gt;So. Back to square one we go. Looking at log files - every developer&amp;rsquo;s favourite past-time. I knew it had to have something to do with the deployment - but I had no errors, anywhere. Github Actions seemed to be a good place to start and after combing through them, I stumbled over this little gem:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;The &amp;quot;--output&amp;quot; option isn&#39;t supported when building a solution. Specifying a solution-level output path results in all projects copying outputs to the same directory, which can lead to inconsistent builds.
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;I had a smoking gun. Or at least some smoke. Basically, what was happening was that the build-output of all my (three) assemblies was jumbled into one folder, which isn&amp;rsquo;t exactly ideal.&lt;/p&gt;
+&lt;h3 id=&#34;the-temporary-solution&#34;&gt;The (temporary) solution&lt;/h3&gt;
+&lt;p&gt;In the next week that contains two Thursdays, I&amp;rsquo;ll create the build script from scratch to fully understand how to tailor it to my needs, but for now, I&amp;rsquo;ll go with the band-aid solution: Excluding the test project from the published output, by inserting the following line in the &lt;code&gt;.csproj&lt;/code&gt; file:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;&amp;lt;IsPublishable&amp;gt;false&amp;lt;/IsPublishable&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;And we&amp;rsquo;re back online. It all just goes to show: Might be a good idea to test once in a while if your production site is still working after every deploy. You might have broken it in ways that do not show up as blinding, rotating lights.&lt;/p&gt;
+</description>
+      
+    </item>
+    
+    <item>
+      <title>Doing Crud With Ledgertag</title>
+      <link>http://localhost:1313/2023/doing-crud-with-ledgertag/</link>
+      <pubDate>Tue, 21 Nov 2023 14:21:32 +0100</pubDate>
+      
+      <guid>http://localhost:1313/2023/doing-crud-with-ledgertag/</guid>
+      
+        <description>&lt;p&gt;Code for this post can be found &lt;a href=&#34;https://github.com/goblinhero/Anex/pull/21&#34;&gt;here&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;While waiting for the solution to deploy - a few points of interest. I&amp;rsquo;ve added &lt;code&gt;Create&lt;/code&gt; and &lt;code&gt;Delete&lt;/code&gt; endpoints for LedgerTag, so we now have CRD (Update will be it&amp;rsquo;s own post as it is a bit more involved to support both the PUT and PATCH HTTP verbs - more on that later).&lt;/p&gt;
+&lt;p&gt;It is at this point that my up-front work is starting to pay off. Mostly it was adding the interface and implementations for Commands in NHibernate. You get nice error messages back if you do something silly and everyone is happy.&lt;/p&gt;
+&lt;p&gt;Next post will be a post-mortem. I managed to break the site when adding the test library, so it is temporarily disabled until I figure a solution.&lt;/p&gt;
+</description>
+      
+    </item>
+    
+    <item>
+      <title>Rant - Azure Portal</title>
+      <link>http://localhost:1313/2023/rant-azure-portal/</link>
+      <pubDate>Tue, 21 Nov 2023 10:41:02 +0100</pubDate>
+      
+      <guid>http://localhost:1313/2023/rant-azure-portal/</guid>
+      
+        <description>&lt;h3 id=&#34;context&#34;&gt;Context&lt;/h3&gt;
+&lt;p&gt;I am trying to troubleshoot connection issues from my web app to the database.&lt;/p&gt;
+&lt;h4 id=&#34;installing-a-local-postgres-client&#34;&gt;Installing a local PostGres client&lt;/h4&gt;
+&lt;p&gt;This all went fine (it&amp;rsquo;s kind of a mess with how it is structured, but by no means the worst I&amp;rsquo;ve seen).&lt;/p&gt;
+&lt;h4 id=&#34;connecting-to-the-azure-database&#34;&gt;Connecting to the Azure database&lt;/h4&gt;
+&lt;p&gt;Here, things went rapidly down-hill. I followed the guide from the Azure Portal:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;Open pgAdmin 4: Launch the pgAdmin 4 application on your computer.
+Register a new server: In the pgAdmin 4 interface, right-click on &amp;quot;Servers&amp;quot; in the left-side browser tree, and select &amp;quot;Register” -&amp;gt; “Server&amp;quot;
+Configure server details: In the &amp;quot;Register - Server&amp;quot; window, you will see multiple tabs - &amp;quot;General&amp;quot;, &amp;quot;Connection&amp;quot;, &amp;quot;SSL&amp;quot;, and others. Fill in the following details:
+
+    General tab
+        Name: Provide a name for the connection (e.g., &amp;quot;myAzureFlexInstance&amp;quot;).
+    Connection tab
+        Hostname/address: Enter &amp;lt;url for Azure database&amp;gt;
+        Port: Leave the port number as is (default is 5432) if you don&#39;t want to connect through pgBouncer. If you are using PgBouncer for connection pooling, change the port number to 6432.
+        Maintenance database: Leave the default
+        Username: Enter &amp;lt;username left blank for this post&amp;gt;
+        Password: Click on the &amp;quot;Save password&amp;quot; checkbox if you want the password to be preserved and enter the corresponding password for the user.
+
+Save the configuration: Click the &amp;quot;Save&amp;quot; button to save the server registration. pgAdmin 4 will now establish a connection to your Azure Database for PostgreSQL Flexible Server.
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;This would be fine, if it actually worked - it does not. The pgAdmin client complains: &amp;ldquo;Unable to connect to server: connection is bad: No such host is known.&amp;rdquo;&lt;/p&gt;
+&lt;p&gt;Now. There is a lot of security around cloud-based offerings, which is fine. But for all that is holy - explain which steps and options I have to complete.&lt;/p&gt;
+&lt;h3 id=&#34;internet-to-the-rescue&#34;&gt;Internet to the rescue?&lt;/h3&gt;
+&lt;p&gt;I&amp;rsquo;ve worked with this crap for what feels like an eternity - and usually somebody else will have had the same problem and somehow managed to get through and out of the kindness of their heart published the steps they took to resolve the issue. Enter my new best friend: &lt;a href=&#34;https://www.sqlshack.com/accessing-azure-database-for-postgresql-using-pgadmin/&#34;&gt;SQL Shack&lt;/a&gt;. Everything in this guide is sublime - fine background, introduction and clean screenshots. Except for one small detail: The screenshots are all out-of-date. I&amp;rsquo;m running pgAdmin 4, version 7.8 - they have used version &amp;hellip; something earlier, but still 4-something. However, the changes in pgAdmin are fairly straightforward, so the intent is clear and I can achieve the same in the new UI.&lt;/p&gt;
+&lt;p&gt;The Azure screenshots, however&amp;hellip; It looks nothing like it - menu items have been renamed, re-arranged and look nothing like they did in May 2021. The relevant settings, I need are under the heading &amp;ldquo;Settings&amp;rdquo;:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;May 2021                    November 2023
+-------------------------   -------------------------
+Connection security
+Connection strings
+Server parameters           Server parameters
+Replication                 Replication
+Active Directory admin
+Pricing tier
+Properties
+Locks                       Locks
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Three(!) out of eight menu items are the same. Everything else (including the things I need) are completely different. Nothing is called &amp;lsquo;Firewall&amp;rsquo; (which is what I am looking for to allow connections from my workstation). If I use the search box - no results for &amp;lsquo;Firewall&amp;rsquo;. I&amp;rsquo;ve clicked every single item under &amp;lsquo;Settings&amp;rsquo; - no where is &amp;lsquo;firewall&amp;rsquo; found.&lt;/p&gt;
+&lt;p&gt;Dear Microsoft - do you know what that signals to me? That you have no idea where you&amp;rsquo;re going. There&amp;rsquo;s no strategy, just project groups milling around, adding things willy-nilly because &amp;lsquo;we can always change it later&amp;rsquo;. This does not inspire confidence - it inspires uncertainty as in: &amp;lsquo;I wonder how long the thing I&amp;rsquo;m making will keep working&amp;rsquo;. And the problem does not stop with nice people working for free for you - Microsoft&amp;rsquo;s own guides, tutorials and other resources are similarly out-of-date.&lt;/p&gt;
+&lt;p&gt;And this is not some esoteric, edge-case problem, I&amp;rsquo;m struggling with. I&amp;rsquo;m trying to connect to a database. That&amp;rsquo;s it. A problem that&amp;rsquo;s been around since the world was in black&amp;rsquo;n&amp;rsquo;white. It&amp;rsquo;s well-known technology and just because it is hosted in Azure changes nothing around the basic concepts.&lt;/p&gt;
+&lt;p&gt;PS! Once I&amp;rsquo;ve figured out how to get it to work, I&amp;rsquo;ll post again to show how I managed it. That&amp;rsquo;s how kind I am.&lt;/p&gt;
+</description>
+      
+    </item>
+    
+    <item>
+      <title>Databases in Azure</title>
+      <link>http://localhost:1313/2023/databases-in-azure/</link>
+      <pubDate>Tue, 21 Nov 2023 08:16:59 +0100</pubDate>
+      
+      <guid>http://localhost:1313/2023/databases-in-azure/</guid>
+      
+        <description>&lt;p&gt;Only a few changes needed to get this running - you can see them &lt;a href=&#34;https://github.com/goblinhero/Anex/pull/11&#34;&gt;here&lt;/a&gt; and &lt;a href=&#34;https://github.com/goblinhero/Anex/pull/12&#34;&gt;here&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;It might be a few changes, but it took quite a bit of tinkering to get working. I have limited experience with PostGres and really did not want to have a local installation. So, I went with the more annoying Docker solution to be able to test locally.&lt;/p&gt;
+&lt;p&gt;In case, you want to try and get it up and running, locally - here are the steps, I took:&lt;/p&gt;
+&lt;h3 id=&#34;get-docker-desktop&#34;&gt;Get Docker Desktop&lt;/h3&gt;
+&lt;p&gt;Fairly straight-forward - go to their &lt;a href=&#34;https://www.docker.com/products/docker-desktop/&#34;&gt;download page&lt;/a&gt; - I did a next-next-next-finish install to get up and running.&lt;/p&gt;
+&lt;h3 id=&#34;get-the-postgres-image-and-run-it&#34;&gt;Get the PostGres image and run it&lt;/h3&gt;
+&lt;p&gt;In your favorite command line, run this command:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;docker run --name some-postgres -e POSTGRES_PASSWORD=mysecretpassword -d -p 5432:5432 postgres
+
+--name  is the name of the container in Docker
+-e      is the environment variables - for PostGres options, POSTGRES_PASSWORD is the variable holding the root password
+-d      run in detached mode. Basically means that the container keeps running without you having to keep the command prompt alive
+-p      is the port that is mapped from inside the docker container to the local host and enables connections from outside Docker
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h3 id=&#34;connect-to-the-postgres-instance-and-create-the-database&#34;&gt;Connect to the PostGres instance and create the database&lt;/h3&gt;
+&lt;p&gt;Choose whichever editor you prefer. In there simply create a blank database called &lt;code&gt;Anex_DB&lt;/code&gt;.&lt;/p&gt;
+&lt;h3 id=&#34;run-the-anex-application-locally&#34;&gt;Run the Anex application locally&lt;/h3&gt;
+&lt;p&gt;This will trigger the &lt;code&gt;.Initialize()&lt;/code&gt; call which will drop the tables and recreate them.&lt;/p&gt;
+&lt;p&gt;Now, this is obviously not how we are going to run in production - users tend to be miffed, if they have to recreate the data everytime you restart the application. At this state of development, this is fine, however, and probably even beneficial.&lt;/p&gt;
+</description>
+      
+    </item>
+    
+    <item>
+      <title>Adding Tests to Pipeline</title>
+      <link>http://localhost:1313/2023/adding-tests-to-pipeline/</link>
+      <pubDate>Mon, 20 Nov 2023 14:43:42 +0100</pubDate>
+      
+      <guid>http://localhost:1313/2023/adding-tests-to-pipeline/</guid>
+      
+        <description>&lt;p&gt;I&amp;rsquo;m still running with the default build-script for a Github action, so basically haven&amp;rsquo;t touched it yet. Adding a testing phase turned out to be really easy:&lt;/p&gt;
+&lt;p&gt;For the section here (see the complete file &lt;a href=&#34;https://github.com/goblinhero/Anex/blob/main/.github/workflows/main_anexerp.yml&#34;&gt;here&lt;/a&gt;):&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;    &amp;lt;snip&amp;gt;
+      include-prerelease: true
+
+  - name: Build with dotnet
+    run: dotnet build --configuration Release
+
+  - name: dotnet publish
+    &amp;lt;snip&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;We simply add a step to have testing:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;    &amp;lt;snip&amp;gt;
+      include-prerelease: true
+
+  - name: Build with dotnet
+    run: dotnet build --configuration Release
+
+  - name: Test with dotnet
+    run: dotnet test --configuration Release
+
+  - name: dotnet publish
+    &amp;lt;snip&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;And since altering the script is considered a pull request - we get sorta instant feedback from the logs (again, full log &lt;a href=&#34;https://github.com/goblinhero/Anex/actions/runs/6930930691/job/18851558694&#34;&gt;here&lt;/a&gt;):&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;&amp;lt;snip&amp;gt;
+Run dotnet test --configuration Release
+Determining projects to restore...
+All projects are up-to-date for restore.
+Anex.Domain -&amp;gt; /home/runner/work/Anex/Anex/Anex.Domain/bin/Release/net8.0/Anex.Domain.dll
+Anex.Domain.Tests -&amp;gt; /home/runner/work/Anex/Anex/Anex.Domain.Tests/bin/Release/net8.0/Anex.Domain.Tests.dll
+
+&amp;lt;snip&amp;gt;
+
+Starting test execution, please wait...
+A total of 1 test files matched the specified pattern.
+
+Passed!  - Failed:     0, Passed:     4, Skipped:     0, Total:     4, Duration: 9 ms - Anex.Domain.Tests.dll (net8.0)
+&amp;lt;snip&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;In the eternal words of Borat: &amp;ldquo;Great success!&amp;rdquo; - we now have CI/CD. Next up is adding a lot of database stuff and testing the API.&lt;/p&gt;
+</description>
+      
+    </item>
+    
+    <item>
+      <title>Fleshing Out Domain</title>
+      <link>http://localhost:1313/2023/fleshing-out-domain/</link>
+      <pubDate>Mon, 20 Nov 2023 13:25:50 +0100</pubDate>
+      
+      <guid>http://localhost:1313/2023/fleshing-out-domain/</guid>
+      
+        <description>&lt;p&gt;The state of the code for this post can be found &lt;a href=&#34;https://github.com/goblinhero/Anex/pull/9&#34;&gt;here&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;So, having things up and sort of running - I need a few more things, before we can finish setting up the infrastructure on Azure.&lt;/p&gt;
+&lt;h3 id=&#34;domain&#34;&gt;Domain&lt;/h3&gt;
+&lt;p&gt;Time to spill the beans - what is going on here: I&amp;rsquo;m a former accountant which means you get to learn a bit about bookkeeping and ERP-systems. The background for our current bookkeeping standards are based on principles invented by monks back in the 1600s, so not exactly modern stuff. However, the ideas are robust and make for some relatively simple logic if what we are doing is correct.&lt;/p&gt;
+&lt;p&gt;Accountants work a lot with audit trails and traceability. Basically, whichever number you come up with in a report concerning your fiscal statements has to be backed by fact and there should be a straight line between the fact and what is presented. This is why I&amp;rsquo;ve implemented the &lt;code&gt;DisallowDeleteTransactionListener&lt;/code&gt; and &lt;code&gt;InvalidTransactionalUpdateException&lt;/code&gt;, so that even if I mess up in the code, I do not accidently alter or delete already posted transactional data.&lt;/p&gt;
+&lt;p&gt;The classes, I&amp;rsquo;ve implemented in this part are the basic building blocks - basically, we have drafts that will turn into final posts and transactions. As an aside, the name &amp;lsquo;Anex&amp;rsquo; is &lt;a href=&#34;https://xena.biz&#34;&gt;Xena&lt;/a&gt; spelled backwards, which was the ERP-system I built on for around 9 years from 2010 - many ideas here are inspired by that work (and the hard-earned lessons back then).&lt;/p&gt;
+&lt;h3 id=&#34;tests&#34;&gt;Tests&lt;/h3&gt;
+&lt;p&gt;Any good project needs a test suite. I&amp;rsquo;ve added some very basic tests here - I&amp;rsquo;ve opted for xUnit and NSubstitute for frameworks, but I have no strong opinions on the matter (I know there is quite a bit of controversy around Moq at the moment). Nothing really exciting going on here, but at least now we have some tests to put in the pipe line.&lt;/p&gt;
+&lt;p&gt;I know the code will probably look fairly complex for what it does, but this is about as complicated as it gets. From now on it is adding more rules and more classes around the basic concepts. I&amp;rsquo;ve eaten a lot of up-front costs to have this working, so that I can concentrate on more important matters later.&lt;/p&gt;
+&lt;p&gt;Next post will revolve around setting up tests in the pipeline and making sure the infrastructure works and can be deployed safely.&lt;/p&gt;
+</description>
+      
+    </item>
+    
+    <item>
+      <title>Setting Up Azure</title>
+      <link>http://localhost:1313/2023/setting-up-azure/</link>
+      <pubDate>Fri, 17 Nov 2023 12:11:02 +0100</pubDate>
+      
+      <guid>http://localhost:1313/2023/setting-up-azure/</guid>
+      
+        <description>&lt;p&gt;So, this took more fiddling, than I would have liked, but hey-ho. I started by creating a new web app on Azure (I used the Web App + Database resource). This took quite a bit, but worked in the end. Next up was linking the Github repo to Azure. I tried different approaches:&lt;/p&gt;
+&lt;h3 id=&#34;dockerized-setting-it-up-with-a-yml-github-action-file-tries-1-8&#34;&gt;Dockerized, setting it up with a .yml Github Action file, tries 1-8&lt;/h3&gt;
+&lt;p&gt;This requires a personal access token to the Github repo to be stored in Azure along with a few extra parameters. My structure did not work out of the box (I had to prefix the path to my docker file - Visual Studio places it in the project path, not the solution path), and once I got the action to find the docker file, I got an error that it could not find my csproj file (which does not make sense since the dockerfile works locally). After some fiddling, I decided not to pursue it further as the error message was very unhelpful and searching online for it pulled a lot of duds.&lt;/p&gt;
+&lt;h3 id=&#34;creating-the-github-action-from-azure-still-dockerized&#34;&gt;Creating the Github action from Azure, still dockerized&lt;/h3&gt;
+&lt;p&gt;Next try was setting up the pipeline from Azure. This was fairly painless setting up, and I could see a new Github Action. Great. Next was pushing a commit to trigger it - since I needed to delete the old Github action, that was a prime target for the trigger-commit. Action failed: &amp;ldquo;No .sln files found&amp;rdquo;. Okay, this was not what I expected since there was no hint when creating it - so back to the drawing board.&lt;/p&gt;
+&lt;h3 id=&#34;adjusting-the-solution-back-to-using-the-sln-file-for-building&#34;&gt;Adjusting the solution back to using the .sln file for building&lt;/h3&gt;
+&lt;p&gt;That simply took moving everything to the root for the action to find the .sln file (I had gone with the default structure of having a /src path). Pushed the commit and there was much rejoycing - the app finally shows the Swagger inferface once again, but now in Azure. So, nothing much to show for the code - it was mostly cleaning up after docker and removing all traces of it.&lt;/p&gt;
+&lt;p&gt;I&amp;rsquo;m sure there are guides how to do this, but trust me, I&amp;rsquo;ve found a number of guides that are a) out-of-date, b) point to no-longer viable(possible) solutions or c) were written using Visual Studio Publish - which I refuse to use. I need my CI/CD. Next part will focus on adjusting the connection string to the new and shiny Azure database which will run MySql. Today&amp;rsquo;s history lesson is that it is not pronounced My SQL like if you had ownership of it. My is the name of founder Michael Widenius&amp;rsquo; daughter which pronounced in Swedish sounds more like the scientific unit my (also known as a micron) which is 1000th of a millimetre. His second daughter is called Maria - hence MariaDB.&lt;/p&gt;
+</description>
+      
+    </item>
+    
+    <item>
+      <title>Anex - Now With Database</title>
+      <link>http://localhost:1313/2023/anex-now-with-database/</link>
+      <pubDate>Fri, 17 Nov 2023 07:44:34 +0100</pubDate>
+      
+      <guid>http://localhost:1313/2023/anex-now-with-database/</guid>
+      
+        <description>&lt;p&gt;The merge request can be found &lt;a href=&#34;https://github.com/goblinhero/Anex/pull/1&#34;&gt;here&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;Okay - so quite a bit going on here. I&amp;rsquo;ve added a database with MSSQL Express just to test that my code actually works. A little caveat if you try to run the code yourself, if you run with the Docker file, remember that it is on an isolated network, so it will not be able to connect directly to your local SQL server. I&amp;rsquo;m not saying that I wasted three hours yesterday trying in vain to get it connected - I&amp;rsquo;m simply saying, find a guide if you want to attempt it.&lt;/p&gt;
+&lt;p&gt;Back to the code. I like Command-Query-Responsibility-Separation, so my ISessionHelper follows that pattern - for now it only supports querying, again to just do a vertical slize and replace my static dictionary with something backed by a database.&lt;/p&gt;
+&lt;p&gt;A good question would be, why I call it a ISessionHelper and not a repository - I&amp;rsquo;m glad you thought of that. I consider the ISession a generic repository since you are working with Dto&amp;rsquo;s and Entities directly in the query syntax. And this brings me to: Why NHibernate when Entity Framework is there. Another good question. It comes down to a few factors outlined below:&lt;/p&gt;
+&lt;h3 id=&#34;i-dont--like--entity-framework&#34;&gt;I don&amp;rsquo;t -like- Entity Framework.&lt;/h3&gt;
+&lt;p&gt;I mean, it gets the job done, but it rubs me in all the wrong ways. I&amp;rsquo;ve seen it lead down dark paths if you use it the default way, publishing your tables directly. Just the fact that there is a .SaveChanges call is a code-smell to me.&lt;/p&gt;
+&lt;h3 id=&#34;i-know-nhibernate&#34;&gt;I know NHibernate&lt;/h3&gt;
+&lt;p&gt;I&amp;rsquo;ve used it extensively since ~2010 and while there are subtleties that I&amp;rsquo;m not a fan of (like the fact that NHibernate is a port from Java, originally) - I like the philosophy of it. The framework is built around the idea that the domain model (the entities, the business logic - pick your naming) should be as oblivious as possible to how it is persisted. It is different concerns and shouldn&amp;rsquo;t be mixed. Yes, my entities have .Id and .Version, which are infrastructure designs, but I&amp;rsquo;m not -that- purist. Also, the event-model of NHibernate is really nice to work with for cross-cutting concerns like security and validation (I&amp;rsquo;ve included a few listeners to show what I mean).&lt;/p&gt;
+&lt;h3 id=&#34;the-onion-architecture&#34;&gt;The Onion architecture&lt;/h3&gt;
+&lt;p&gt;By far one of my favorite ways to build software. The first article I read about it was by Jeffrey Palermo (it can be found &lt;a href=&#34;https://jeffreypalermo.com/2008/07/the-onion-architecture-part-1/&#34;&gt;here&lt;/a&gt;). If you take it to the max (and of course we do) - the domain model should have no dependencies beside the BCL (Base Class Library). I find it easier to adhere to this, using NHibernate over EF.&lt;/p&gt;
+&lt;p&gt;Alright, back on track - you&amp;rsquo;ll notice that I have LedgerTag and LedgerTagDto. The reasoning is simple - I want to protect the entities as much as possible, and this means that they should -never- be sent over the wire. You know what they do to data on the internet, right? Also, if you look in the mapping files, you&amp;rsquo;ll notice that the Dto&amp;rsquo;s are marked as immutable, so I do not risk accidently writing data to the database from a loose Dto that someone mangled. Only entities are allowed to be persisted.&lt;/p&gt;
+&lt;p&gt;I think that&amp;rsquo;s enough for now - next up is hosting this on Azure which was the whole reason for all of this.&lt;/p&gt;
+</description>
+      
+    </item>
+    
+    <item>
+      <title>Anex - First Blood</title>
+      <link>http://localhost:1313/2023/anex-first-blood/</link>
+      <pubDate>Thu, 16 Nov 2023 09:50:47 +0100</pubDate>
+      
+      <guid>http://localhost:1313/2023/anex-first-blood/</guid>
+      
+        <description>&lt;p&gt;In the past, I have worked on several larger solutions in DotNet - and to get to know Azure, I need something fairly substantial to have it make sense and feel the pain points of the platform.&lt;/p&gt;
+&lt;p&gt;Introducing Anex (There is a clever backstory here, that I&amp;rsquo;ll leave for later) - at the bottom of this post, I&amp;rsquo;ll link to the release version of the repository that matches my progress.&lt;/p&gt;
+&lt;p&gt;Microsoft just launched .NET 8.0 (see the &lt;a href=&#34;https://devblogs.microsoft.com/dotnet/announcing-dotnet-8/&#34;&gt;launch announcement&lt;/a&gt;) - so, naturally, we are going cutting edge and taking all the pains along the way. This includes having to work in Visual Studio, since Rider does not support 8.0 fully yet. The most confusing part was choosing between the templates when creating a new project - I went with &amp;ldquo;ASP.NET Core Web API&amp;rdquo;, which annoyingly creates something with Weather Forecasts.&lt;/p&gt;
+&lt;p&gt;So, quick clean-up, removing all that crap and references to it - and we are ready to add the first Controller - the LedgerTagController. For now, it&amp;rsquo;s not really important what a LedgerTag is, I&amp;rsquo;ll do a blog post later about the domain we are working with here - right now, I just need enough to have something show up in Swagger.&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;[ApiController]
+[Route(&amp;quot;[controller]&amp;quot;)]
+public class LedgerTagController : ControllerBase
+{
+    private static Dictionary&amp;lt;long, LedgerTagDto&amp;gt; _ledgerTags = new Dictionary&amp;lt;long,LedgerTagDto&amp;gt;
+    {
+        {1, new LedgerTagDto{Id=1, Description=&amp;quot;Telephone costs&amp;quot;}},
+        {2, new LedgerTagDto{Id=2, Description=&amp;quot;Other costs&amp;quot;} }
+    };
+    public LedgerTagController()
+    {
+    }
+
+    [HttpGet()]
+    public async Task&amp;lt;IActionResult&amp;gt; Get()
+    {
+        return Ok(_ledgerTags.Values);
+    }
+
+    [HttpGet(&amp;quot;{id}&amp;quot;)]
+    public async Task&amp;lt;IActionResult&amp;gt; GetById(long id)
+    {
+        return _ledgerTags.TryGetValue(id, out var ledgerTag) 
+            ? Ok(ledgerTag) 
+            : NotFound();
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Very basic stuff, we are running async - we might as well, since it is needed later. And lo and behold - we get the following swagger output when we run it in debug (I will update later, once I figure out how to left-align the image):
+&lt;img src=&#34;http://localhost:1313/images/2023/Swagger-screenshot.png&#34; alt=&#34;Screenshot from Swagger&#34;&gt;&lt;/p&gt;
+&lt;p&gt;You can find the release on &lt;a href=&#34;https://github.com/goblinhero/Anex/releases/tag/v1&#34;&gt;Github&lt;/a&gt;.&lt;/p&gt;
+</description>
+      
+    </item>
+    
+    <item>
+      <title>Microsoft Certifications</title>
+      <link>http://localhost:1313/2023/microsoft-certifications/</link>
+      <pubDate>Wed, 15 Nov 2023 20:07:39 +0100</pubDate>
+      
+      <guid>http://localhost:1313/2023/microsoft-certifications/</guid>
+      
+        <description>&lt;p&gt;It&amp;rsquo;s been a long time since I had to worry about certifications. Some twenty years ago, I took a few for a long since gone financial system. This was back when Microsoft had the MCSA, MCSD and MCSE certifications and those were a daunting thing to start on. They were deeply technical and you basically had to know the ins and outs of whichever platform you were aiming for. Apparently, those retired a few years back.&lt;/p&gt;
+&lt;p&gt;So, I went to Microsoft&amp;rsquo;s &lt;a href=&#34;https://learn.microsoft.com&#34;&gt;Learn&lt;/a&gt; platform and poked around. It was an odd experience, like sort of surreal. I&amp;rsquo;m a .NET developer, so I would have imagined there&amp;rsquo;d be a host of C#, C#.core, ASP.Net etc. certifications. There are zero, as in -none-.&lt;/p&gt;
+&lt;p&gt;Instead, there are Azure certifications and my employer is willing to shell out for those, so I went and took three different Fundementals (the 900-series). To call them technical would be an overstatement. It&amp;rsquo;s multiple choice - and if you&amp;rsquo;ve read the sales pitches and spent a few hours reading through the accompanying lessons, you are well on your way to passing.&lt;/p&gt;
+&lt;p&gt;A few workplaces back, we had a (derogatory) term for this: &amp;ldquo;Whiteboard consultants&amp;rdquo;. The kind of consultants that could draw diagrams and list all the acronyms and buzzwords, but wouldn&amp;rsquo;t be able to code their way out of a paperbag with a guide and a flash-light. It boggles my mind that there are no hardcore, hell, even novice certifications to prove that you know the difference between a for-loop and an if-statement.&lt;/p&gt;
+&lt;p&gt;So! I&amp;rsquo;ve asked around, and it seems the AZ-204 certification is at least somewhat harder, but it is still more handling the Azure platform than it is coding good software, but hey-ho. I will return with my findings.&lt;/p&gt;
+</description>
+      
+    </item>
+    
+    <item>
+      <title>DNS My Old Friend</title>
+      <link>http://localhost:1313/2023/dns-my-old-friend/</link>
+      <pubDate>Wed, 15 Nov 2023 19:35:34 +0100</pubDate>
+      
+      <guid>http://localhost:1313/2023/dns-my-old-friend/</guid>
+      
+        <description>&lt;p&gt;I am by no means a frontend developer. I thrive in my comfortable backend (sounded way better in my head, I&amp;rsquo;ll admit). First thing up was buying the domain - I knew my old &lt;a href=&#34;https://dandomain.dk&#34;&gt;employer&lt;/a&gt; has a special on Danish domains for the first year, so that part was fairly cheap.&lt;/p&gt;
+&lt;p&gt;And then&amp;hellip; Yeah, then what. I know, theoretically, how DNS works. And I had found a guide as to how to add what Azure calls a &amp;ldquo;Custom domain&amp;rdquo; (which part of it that is custom is a good question). So, after fumbling around (I had to add a TXT DNS entry to prove to Azure that I own the domain, and then adding A and CNAME record pointing to the IP and the randomly generated Azure-domain, respectively).&lt;/p&gt;
+&lt;p&gt;The most annoying part? My own incompetence forgetting to set the TTL to a lower number than 3600 seconds after I made a temporary change to have a subdomain pointing to the Azure site&amp;hellip; So! A few hours later, and everything is now working. But yeah, I do not enjoy this part of developing.&lt;/p&gt;
+</description>
+      
+    </item>
+    
+    <item>
+      <title>Hugo</title>
+      <link>http://localhost:1313/2023/hugo/</link>
+      <pubDate>Wed, 15 Nov 2023 14:19:20 +0100</pubDate>
+      
+      <guid>http://localhost:1313/2023/hugo/</guid>
+      
+        <description>&lt;p&gt;Choosing between static blog generators is a fairly straight-forward process. You basically choose a flavour (read: Find something that has decent traction and is well-supported). I decided to go with &lt;a href=&#34;https://github.com/gohugoio/hugo&#34;&gt;Hugo&lt;/a&gt; since it supports markdown syntax, has responsive design and seems fairly extensible.&lt;/p&gt;
+&lt;p&gt;I&amp;rsquo;m probably not going to go crazy with templating and styling, so a basic theme is fine for my purpose. There is a nice and diverse selection of sort-of &lt;a href=&#34;https://themes.gohugo.io/&#34;&gt;supported themes&lt;/a&gt; each with it&amp;rsquo;s own idea and execution. I&amp;rsquo;m basic, so went with &lt;a href=&#34;https://github.com/lxndrblz/anatole/wiki&#34;&gt;Anatole&lt;/a&gt; linking it as a Github sub-repo. Even with my non-existant front-end skills, I managed to get it to serve, locally - and then it was a simple matter of setting up an Azure Static Web App, linking it to the Github repo and everything was basically ready to go. One little user-error was forgetting that by default it only shows non-draft posts.&lt;/p&gt;
+&lt;p&gt;But past that little, self-inflicted hick-up, I&amp;rsquo;m up and running. As for the result&amp;hellip; Well, you are reading it, right now.&lt;/p&gt;
+</description>
+      
+    </item>
+    
+    <item>
+      <title>Hello World</title>
+      <link>http://localhost:1313/2023/hello-world/</link>
+      <pubDate>Wed, 15 Nov 2023 13:32:05 +0100</pubDate>
+      
+      <guid>http://localhost:1313/2023/hello-world/</guid>
+      
+        <description>&lt;p&gt;So, finally got back into blogging. And since I like control - this time around, I went with using a framework to create my blog with static pages. I know, I know - I could have just used a blogging platform somewhere.. and watched it be enshittified in a matter of months. I choose not to.&lt;/p&gt;
+&lt;p&gt;Besides, this blog will also serve to document my adventures into Azure, since that is the platform of choice for my new employer - so, I need something to experiment on.&lt;/p&gt;
+&lt;p&gt;Hopefully, at some point this will be set up with pipelines and all that other fancy CI/CD that is all the rage.&lt;/p&gt;
+</description>
+      
+    </item>
+    
+  </channel>
+</rss>
