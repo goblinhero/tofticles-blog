@@ -1,3 +1,6 @@
 .post__content code {
     display: inline-block;
 }
+img {
+    display: inline !important; 
+}
