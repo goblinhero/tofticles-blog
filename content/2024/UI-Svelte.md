@@ -15,7 +15,7 @@ I had [Svelte](https://svelte.dev/) recommended for being lightweight - so, that
 
 I am using [Kit.Svelte](https://kit.svelte.dev/docs/load) on top to make creating things easier - you do need [NodeJS](https://nodejs.org/en) and [NPM](https://www.npmjs.com/), but that holds true for most web frameworks these days, but having those, this is basically what you need to create a Svelte project:
 
-```Shell
+```
 npm create svelte@latest my-app
 cd my-app
 npm install
@@ -27,19 +27,19 @@ Routes are defined with your directory structure, which makes it nice and simple
 To get this client created, I downloaded the swagger.json file from the Swagger UI, that the backend produces (this file is in `Anex.Web/src/api`) and then from a terminal:
 
 Installation:
-```Shell
+```
 npm i -D openapi-typescript@next typescript
 npm i openapi-fetch
 npm i -D openapi-typescript typescript
 ```
 
 Creating the client (with the terminal in the directory `Anex.Web`):
-```Shell
+```
 npx openapi-typescript ./src/api/swagger.json ./src/api/schema.d.ts
 ```
 
 For using the OpenAPI.Fetch generated client, I used the following code to set the base-uri of the API:
-```TypeScript
+```
 import createClient from "openapi-fetch";
 import type { paths } from "./schema";
 

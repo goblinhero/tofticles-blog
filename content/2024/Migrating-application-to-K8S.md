@@ -13,7 +13,7 @@ I'm not going to explain the idea behind Docker - plenty of information about th
 
 #### The entire dockerfile
 
-```Dockerfile
+```
 FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS base
 USER $APP_UID
 WORKDIR /app
@@ -52,7 +52,7 @@ Quite a bit going on here, I'll try to explain my thoughts for each section, bel
 
 #### Why two dotnet images?
 
-```Dockerfile
+```
 FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS base
 USER $APP_UID
 WORKDIR /app
@@ -67,7 +67,7 @@ So - there are basically two phases to creating the final image: Building the so
 
 #### Why three COPY commands?
 
-```Dockerfile
+```
 WORKDIR /src
 
 COPY ["Anex.Api/Anex.Api.csproj", "Anex.Api/"]
@@ -85,7 +85,7 @@ The end-result is that at this point in the docker file, all the source code and
 
 #### Building and testing
 
-```Dockerfile
+```
 WORKDIR "/src/Anex.Domain.Tests"
 RUN dotnet test "Anex.Domain.Tests.csproj"
 

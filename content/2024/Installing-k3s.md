@@ -13,7 +13,7 @@ There is a number of ways to install K3S, but since I wanted to use Rancher on t
 
 You'll need to have curl installed on all nodes as well as either disabling firewalls on the nodes or allowing [specific ports](https://docs.k3s.io/installation/requirements#networking). Since I'm using Ubuntu and having no public access - I went with disabling `ufw` entirely:
 
-```Bash
+```
 sudo ufw disable
 ```
 
@@ -35,7 +35,7 @@ The default mode for the kubeconfig is `600` which means only a root user can re
 
 I ran this as a root user - not entirely sure it is needed, but I was not interested in fiddling with permissions and a half-installed K3S.
 
-```Bash
+```
 curl -sfL https://get.k3s.io | INSTALL_K3S_VERSION=v1.27.11+k3s1 K3S_KUBECONFIG_MODE="644" sh -s - server
 ```
 
@@ -53,13 +53,13 @@ This needs to hit port 6443 on (one of) your control plane node(s). For my simpl
 
 The token is created when installing the first control plane node and can be located with this simple command - simply copy the result for the K3S_TOKEN parameter:
 
-```Bash
+```
 cat /var/lib/rancher/k3s/server/token
 ```
 
 #### The resulting command to install the agent nodes of K3s
 
-```Bash
+```
 curl -sfL https://get.k3s.io | INSTALL_K3S_VERSION=v1.27.11+k3s1 K3S_URL=192.168.0.71:6443 K3S_TOKEN=the-token-from-control-plane sh -
 ```
 

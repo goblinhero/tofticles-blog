@@ -15,13 +15,13 @@ XRDP is an alternative to the baked-in RDP in Ubuntu that I have been unable to 
 
 Simply run:
 
-```Bash
+```
 sudo apt install xrdp
 ```
 
 Followed by:
 
-```Bash
+```
 sudo systemctl status xrdpex
 ```
 
@@ -31,7 +31,7 @@ To check that it is running.
 
 If you do nothing, it will use the old Gnome desktop, to avoid this, create a file called `.xsessionrc` in your home directory with the following contents:
 
-```Bash
+```
 export GNOME_SHELL_SESSION_MODE=ubuntu
 export XDG_CURRENT_DESKTOP=ubuntu:GNOME
 export XDG_CONFIG_DIRS=/etc/xdg/xdg-ubuntu:/etc/xdg

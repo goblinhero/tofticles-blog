@@ -13,7 +13,7 @@ I've PDF'ed this particular [gem](https://learn.microsoft.com/en-us/training/mod
 
 At the time of writing - it includes this code snippet:
 
-```Csharp
+```
 private static void ListProfilesAndEndpoints(CdnManagementClient cdn)
 {
     // List all the CDN profiles in this resource group
