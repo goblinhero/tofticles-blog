@@ -25,7 +25,7 @@ In my view, social media vs. physical interactions in meatspace are not either-o
 
 Ads. Simply put, the business model of (most) social media is based on advertising and it creates all the wrong incentives. The companies behind the largest social media capitalize on their users spending time on their platforms. The longer the user is on the platform, the more money the company makes. We are allowing them to experiment on the users worse than any guinea pig with (unsurprising) terrible effects.
 
-## What do we do about them?
+## What should we do about them?
 
 We curtail them. Through legislation, rules and heavy overview of their business practises. We disallow 'the feed' - any kind of feed that will have you see a) promoted or b) otherwise unsolicited content will not be allowed. Think of it this way: We remove the gamification of the social part. Unless you specifically decide to follow Andrew Tate, you are not shown content from Andrew Tate. 
 
